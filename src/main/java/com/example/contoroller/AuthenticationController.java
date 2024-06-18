@@ -25,7 +25,7 @@ public class AuthenticationController {
 
     }
 
+    // LoginForm DI
     record LoginForm(String email, String password) {
-
     }
 }
