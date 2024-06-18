@@ -1,6 +1,7 @@
 package com.example.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,5 +17,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "options")
 public class Option {
+    @Id
     private String id;
 }
