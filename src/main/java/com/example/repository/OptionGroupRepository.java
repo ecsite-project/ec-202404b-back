@@ -9,4 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface OptionGroupRepository extends JpaRepository<OptionGroup, UUID> {
+
 }
