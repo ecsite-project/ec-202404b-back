@@ -1,0 +1,27 @@
+# API のエンドポイントを定義します
+$endpoint = "http://localhost:8080/api/register"
+
+# UUIDを生成します
+$uuid = [guid]::NewGuid().ToString()
+
+# 送信する JSON データを定義します
+$jsonData = @{
+    id = $uuid
+    firstName = "John"
+    lastName = "Doe"
+    email = "johndoe@example.com"
+    password = "password123"
+    confirmPassword = "password123"
+    zipcode = "12345"
+    prefecture = "Tokyo"
+    municipalities = "Shinjuku"
+    address = "1-2-3 Example Street"
+    telephone = "123-456-7890"
+} | ConvertTo-Json
+
+# POST リクエストを送信します
+$response = Invoke-RestMethod -Uri $endpoint -Method Post -Body $jsonData -ContentType "application/json"
+
+========================================================================================
+
+
