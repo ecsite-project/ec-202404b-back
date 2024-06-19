@@ -44,11 +44,11 @@ public class Item {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "breed_id", nullable = false)
-    private Breed breedId;
+    private Breed breed;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "color_id", nullable = false)
-    private Color colorId;
+    private Color color;
 
     @Column
     private LocalDateTime createdAt;
