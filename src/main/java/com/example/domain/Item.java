@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  *
@@ -25,7 +26,7 @@ import java.time.LocalDateTime;
 @Table(name = "items")
 public class Item {
     @Id
-    private String id;
+    private UUID id;
 
     @Column(nullable = false)
     private String description;
