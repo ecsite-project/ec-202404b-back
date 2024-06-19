@@ -1,12 +1,6 @@
 package com.example.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +10,9 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
+ * 商品のドメインクラス.
  *
- * @author char5742
+ * @author takeru.chugun
  */
 @Entity
 @Data
@@ -26,6 +21,7 @@ import java.util.UUID;
 @Table(name = "items")
 public class Item {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(nullable = false)
@@ -46,11 +42,11 @@ public class Item {
     @Column(nullable = false)
     private String deleted;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "breed_id", nullable = false)
     private Breed breedId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "color_id", nullable = false)
     private Color colorId;
 
