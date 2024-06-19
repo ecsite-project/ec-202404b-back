@@ -11,6 +11,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 /**
  *
  * @author char5742
@@ -37,6 +40,9 @@ public class Item {
     private String gender;
 
     @Column(nullable = false)
+    private LocalDate birthDay;
+
+    @Column(nullable = false)
     private String deleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,8 +54,8 @@ public class Item {
     private Color colorId;
 
     @Column
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     @Column
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 }
