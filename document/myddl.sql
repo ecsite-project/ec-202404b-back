@@ -61,6 +61,7 @@ CREATE TABLE items (
   , price integer not null
   , image text not null
   , gender text not null
+  , birth_day DATE not null
   , deleted boolean default false not null
   , breed_id UUID
   , color_id UUID
