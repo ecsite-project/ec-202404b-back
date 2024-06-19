@@ -27,8 +27,11 @@ public class Option {
 
     @Column(nullable = false)
     private Integer price;
-
-    @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID optionGroupId;
+//
+//    @Column(nullable = false)
+//    @GeneratedValue(strategy = GenerationType.UUID)
+//    private UUID optionGroupId;
+    @ManyToOne
+    @JoinColumn(name = "option_group_id",nullable = false)
+    private OptionGroup optionGroup;
 }

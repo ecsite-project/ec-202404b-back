@@ -1,7 +1,7 @@
 package com.example.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+        import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +29,7 @@ public class OptionGroup {
     @Column(nullable = false)
     private String inputType;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "optionGroup")
     private List<Option> optionList;
 }
