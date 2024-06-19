@@ -41,11 +41,11 @@ public class Item {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "breed_id", nullable = false)
-    private Integer breedId;
+    private Breed breedId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "color_id", nullable = false)
-    private Integer colorId;
+    private Color colorId;
 
     @Column
     private String createdAt;
