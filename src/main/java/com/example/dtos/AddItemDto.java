@@ -1,5 +1,9 @@
 package com.example.dtos;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -8,6 +12,9 @@ import java.util.UUID;
  *
  * @author takeru.chugun
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AddItemDto {
     /** 商品id(String) */
     private String itemId;

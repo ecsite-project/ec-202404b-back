@@ -37,15 +37,12 @@ public class ShowItemListService {
      */
     public List<Item> search(SearchDto form) {
         if (form.getBreedId() == null && form.getColorList().isEmpty()) {
-            System.out.println("お金だけで検索");
             return itemRepository.findByPriceBetween(Double.parseDouble(form.getMinPrice()),
                     Double.parseDouble(form.getMaxPrice()));
         } else if (form.getBreedId() == null) {
-            System.out.println("お金と色で検索");
             return itemRepository.findByPriceBetweenAndColorIdIn(Double.parseDouble(form.getMinPrice()),
                     Double.parseDouble(form.getMaxPrice()), form.getColorList());
         } else {
-            System.out.println("全条件で検索");
             return itemRepository.findByPriceBetweenAndBreedIdAndColorIdIn(
                     Double.parseDouble(form.getMinPrice()),
                     Double.parseDouble(form.getMaxPrice()),

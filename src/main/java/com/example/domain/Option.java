@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -33,4 +34,7 @@ public class Option {
     @JoinColumn(name = "option_group_id", nullable = false)
     @JsonIgnore
     private OptionGroup optionGroup;
+
+    @ManyToMany(mappedBy = "options")
+    private List<OrderItem> orderItems;
 }
