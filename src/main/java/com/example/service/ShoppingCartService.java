@@ -75,10 +75,11 @@ public class ShoppingCartService {
         order.setDestinationMunicipalities("");
         order.setDestinationAddress("");
         order.setDestinationTel("");
-        order.setDestinationMethod("");
+        order.setDeliveryDate(LocalDate.now());
+        order.setDeliveryTime(UUID.fromString("28840ab6-5779-4705-a3e2-73920ba5f298"));
+        order.setPaymentMethod("クレカ");
         order.setCreatedAt(LocalDateTime.now());
         order.setUpdatedAt(LocalDateTime.now());
-
         order.setOrderItems(List.of(orderItem));
 
         orderItem.setOrder(orderRepository.save(order));

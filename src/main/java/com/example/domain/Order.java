@@ -61,7 +61,7 @@ public class Order {
     private String destinationTel;
 
     @Column(name = "delivery_date", columnDefinition = "text", nullable = false)
-    private String deliveryDate;
+    private LocalDate deliveryDate;
 
     @Column(name = "delivery_time", columnDefinition = "text", nullable = false)
     private UUID deliveryTime;
