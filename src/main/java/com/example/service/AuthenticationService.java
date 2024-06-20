@@ -1,43 +1,39 @@
 package com.example.service;
 
-import com.example.dtos.LoginDto;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.example.dtos.LoginDto;
+import com.example.repositories.UserRepository;
+import com.example.security.JsonWebTokenUtil;
+
+import lombok.val;
 
 /**
  *
  * @author char5742
  */
 @Service
-public class AuthenticationService{
+public class AuthenticationService {
+
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private UserRepository userRepository;
 
-    public boolean login(LoginDto loginDto) {
-        try {
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-            Authentication authentication = authenticationManager.authenticate(authenticationToken);
+    @Autowired
+    private JsonWebTokenUtil jwtUtil;
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            return true;
-        } catch (AuthenticationException e) {
-            return false;
+    public String login(LoginDto loginDto) {
+        val user = userRepository.findByEmail(loginDto.getEmail());
+        if (user == null) {
+            return null;
         }
-    }
-
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
-        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
-        logoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+        if (passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
+            return jwtUtil.generateToken(user.getId().toString(), user.getLastName() + " " + user.getFirstName());
+        }
+        return null;
     }
 }
