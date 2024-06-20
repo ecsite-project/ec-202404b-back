@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
  * ショッピングカートを操作するサービスクラス.
  *
  * @author takeru.chugun
- * @author mun
  */
 @Service
 public class ShoppingCartService {

@@ -60,8 +60,14 @@ public class Order {
     @Column(name = "destination_tel", columnDefinition = "text", nullable = false)
     private String destinationTel;
 
-    @Column(name = "destination_method", columnDefinition = "text", nullable = false)
-    private String destinationMethod;
+    @Column(name = "delivery_date", columnDefinition = "text", nullable = false)
+    private String deliveryDate;
+
+    @Column(name = "delivery_time", columnDefinition = "text", nullable = false)
+    private UUID deliveryTime;
+
+    @Column(name = "payment_method", columnDefinition = "text", nullable = false)
+    private String paymentMethod;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
