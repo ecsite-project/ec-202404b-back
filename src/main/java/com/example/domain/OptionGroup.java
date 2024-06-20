@@ -1,10 +1,11 @@
 package com.example.domain;
 
 import jakarta.persistence.*;
-        import lombok.AllArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,8 +29,7 @@ public class OptionGroup {
 
     @Column(nullable = false)
     private String inputType;
-
-//    @Column(nullable = false)
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "optionGroup")
-    private List<Option> optionList;
+    
+    @OneToMany(mappedBy = "optionGroup", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Option> options = new ArrayList<>();
 }

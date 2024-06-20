@@ -25,7 +25,7 @@ public class ShowItemDetailController {
     public ResponseEntity<?> showDetailPage(String id){
         try{
 //            UUID uuid = UUID.fromString(id);
-            System.out.println("あ");
+
             UUID uuid =  UUID.fromString("97da7257-354a-45d5-96cc-b9e8a532587d");
             return ResponseEntity.ok(service.getDetail(uuid));
         }catch(Exception e){

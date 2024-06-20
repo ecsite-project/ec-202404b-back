@@ -1,5 +1,6 @@
 package com.example.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,11 +28,9 @@ public class Option {
 
     @Column(nullable = false)
     private Integer price;
-//
-//    @Column(nullable = false)
-//    @GeneratedValue(strategy = GenerationType.UUID)
-//    private UUID optionGroupId;
-    @ManyToOne
-    @JoinColumn(name = "option_group_id",nullable = false)
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "option_group_id", nullable = false)
+    @JsonIgnore
     private OptionGroup optionGroup;
 }
