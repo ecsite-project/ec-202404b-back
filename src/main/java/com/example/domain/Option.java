@@ -13,6 +13,7 @@ import java.util.UUID;
  * オプションのドメインクラス.
  *
  * @author takeru.chugun
+ * @author mun
  */
 @Entity
 @Data
@@ -35,6 +36,7 @@ public class Option {
     @JsonIgnore
     private OptionGroup optionGroup;
 
+    //here
     @ManyToMany(mappedBy = "options")
     private List<OrderItem> orderItems;
 }

@@ -7,12 +7,14 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 /**
  * 商品のドメインクラス.
  *
  * @author takeru.chugun
+ * @author mun
  */
 @Entity
 @Data
@@ -55,4 +57,7 @@ public class Item {
 
     @Column
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
 }

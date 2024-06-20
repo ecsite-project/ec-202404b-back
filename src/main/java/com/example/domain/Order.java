@@ -15,6 +15,7 @@ import java.util.UUID;
  * 注文詳細のドメインクラス.
  *
  * @author takeru.chugun
+ * @author mun
  */
 @Entity
 @Data
@@ -68,6 +69,6 @@ public class Order {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<OrderItem> orderItemList = new ArrayList<>();
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
 }

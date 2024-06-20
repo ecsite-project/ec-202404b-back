@@ -13,6 +13,7 @@ import java.util.UUID;
  * OrderItemのドメインクラス.
  *
  * @author takeru.chugun
+ * @author mun
  */
 @Entity
 @Data
@@ -24,10 +25,12 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
-    @JoinColumn(name = "order_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "order_id")
     private Order order;
 
     @ManyToMany
