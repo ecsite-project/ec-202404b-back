@@ -1,13 +1,20 @@
 package com.example.domain;
 
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,6 +34,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "orders")
 public class Order {
     @Id
@@ -36,50 +44,40 @@ public class Order {
     @Column(nullable = false)
     private UUID userId;
 
-    @Column(name = "status" , nullable = false)
-    private Integer status;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
-    @Column(name = "total_price", nullable = false)
     private Integer totalPrice;
 
-    @Column(name = "order_date", nullable = false)
     private LocalDate orderDate;
 
-    @Column(name = "destination_name", columnDefinition = "text", nullable = false)
     private String destinationName;
 
-    @Column(name = "destination_email", columnDefinition = "text", nullable = false)
     private String destinationEmail;
 
-    @Column(name = "destination_zipcode", columnDefinition = "text", nullable = false)
     private String destinationZipcode;
 
-    @Column(name = "destination_prefecture", columnDefinition = "text", nullable = false)
     private String destinationPrefecture;
 
-    @Column(name = "destination_municipalities", columnDefinition = "text", nullable = false)
     private String destinationMunicipalities;
 
-    @Column(name = "destination_address", columnDefinition = "text", nullable = false)
     private String destinationAddress;
 
-    @Column(name = "destination_tel", columnDefinition = "text", nullable = false)
     private String destinationTel;
 
-    @Column(name = "delivery_date", columnDefinition = "text", nullable = false)
     private LocalDate deliveryDate;
 
-    @Column(name = "delivery_time", nullable = false)
-    private TimeRange deliveryTime;
+    @Enumerated(EnumType.STRING)
+    private TimeRange timeRange;
 
-    @Column(name = "payment_method", columnDefinition = "text", nullable = false)
     private String paymentMethod;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    @CreatedDate
+    private Instant createdAt;
 
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
+    @LastModifiedDate
+    private Instant updatedAt;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;

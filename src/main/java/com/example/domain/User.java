@@ -1,17 +1,21 @@
 package com.example.domain;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +28,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
 public class User {
     @Id
@@ -32,47 +38,36 @@ public class User {
     private UUID id;
 
     /** 名前 */
-    @Column(name = "firstname", nullable = false)
+    @Column(nullable = false)
     private String firstName;
     /** 苗字 */
-    @Column(name = "lastname", nullable = false)
+    @Column(nullable = false)
     private String lastName;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false)
     private String password;
 
-    @Column(name = "zipcode", nullable = false)
+    @Column(nullable = false)
     private String zipcode;
 
-    @Column(name = "prefecture", nullable = false)
+    @Column(nullable = false)
     private String prefecture;
 
-    @Column(name = "municipalities", nullable = false)
+    @Column(nullable = false)
     private String municipalities;
 
-    @Column(name = "address", nullable = false)
+    @Column(nullable = false)
     private String address;
 
-    @Column(name = "telephone", nullable = false)
+    @Column(nullable = false)
     private String telephone;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    @CreatedDate
+    private Instant createdAt;
 
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    @LastModifiedDate
+    private Instant updatedAt;
 }

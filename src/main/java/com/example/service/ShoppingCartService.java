@@ -2,8 +2,6 @@
 package com.example.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
+import com.example.domain.OrderStatus;
 import com.example.dtos.AddItemDto;
 import com.example.dtos.GetShoppingCartDto;
 import com.example.repository.ItemRepository;
@@ -43,14 +42,15 @@ public class ShoppingCartService {
 
     @Autowired
     HttpSession session;
+
     /**
      * ショッピングカートを検索させる.
      *
      * @param form 表示するユーザのidが入ったform
      * @return ユーザのショッピングカート
      */
-    public Order getShoppingCart(GetShoppingCartDto form){
-        return orderRepository.findByStatusAndUserId(0,UUID.fromString(form.getUserId()));
+    public Order getShoppingCart(GetShoppingCartDto form) {
+        return orderRepository.findByStatusAndUserId(OrderStatus.BEFORE_ORDER, UUID.fromString(form.getUserId()));
     }
 
     /**
@@ -58,7 +58,7 @@ public class ShoppingCartService {
      *
      * @param form 追加する商品のidと選択されたオプションのリストが入ったフォーム
      */
-    public void addItem(AddItemDto form){
+    public void addItem(AddItemDto form) {
         var item = itemRepository.findById(UUID.fromString(form.getItemId())).orElse(null);
         var options = form.getOptionIdList().stream()
                 .map(optionId -> optionRepository.findById(UUID.fromString(optionId))
@@ -71,25 +71,13 @@ public class ShoppingCartService {
         orderItem = orderItemRepository.save(orderItem);
 
         var order = new Order();
-        order.setStatus(0);
+        order.setStatus(OrderStatus.BEFORE_ORDER);
         order.setTotalPrice(10);
         order.setOrderDate(LocalDate.now());
-        order.setDestinationName("");
-        order.setDestinationEmail("");
-        order.setDestinationZipcode("");
-        order.setDestinationPrefecture("");
-        order.setDestinationMunicipalities("");
-        order.setDestinationAddress("");
-        order.setDestinationTel("");
-        order.setDeliveryDate(LocalDate.now());
-        order.setDeliveryTime(UUID.fromString("28840ab6-5779-4705-a3e2-73920ba5f298"));
-        order.setPaymentMethod("クレカ");
-        order.setCreatedAt(LocalDateTime.now());
-        order.setUpdatedAt(LocalDateTime.now());
         order.setOrderItems(List.of(orderItem));
 
         orderItem.setOrder(orderRepository.save(order));
-        //Update
+        // Update
         orderItemRepository.save(orderItem);
     }
 
@@ -99,7 +87,7 @@ public class ShoppingCartService {
      * @param userId user_id
      * @return true or false
      */
-    public Boolean isUserId(UUID userId){
+    public Boolean isUserId(UUID userId) {
         return orderRepository.existsByUserId(userId);
     }
 
@@ -108,27 +96,14 @@ public class ShoppingCartService {
      *
      * @param userId userId
      */
-    public void createOrder(UUID userId){
+    public void createOrder(UUID userId) {
         var order = new Order();
         // user_idを設定する
         order.setUserId(userId);
         // デフォルト値（not nullなので）
-        order.setStatus(0);
+        order.setStatus(OrderStatus.BEFORE_ORDER);
         order.setTotalPrice(0);
         order.setOrderDate(LocalDate.now());
-        order.setDestinationName("");
-        order.setDestinationEmail("");
-        order.setDestinationZipcode("");
-        order.setDestinationPrefecture("");
-        order.setDestinationMunicipalities("");
-        order.setDestinationAddress("");
-        order.setDestinationTel("");
-        order.setDeliveryDate(LocalDate.now());
-        order.setDeliveryTime(UUID.fromString("28840ab6-5779-4705-a3e2-73920ba5f298"));
-        order.setPaymentMethod("クレカ(test)");
-        order.setCreatedAt(LocalDateTime.now());
-        order.setUpdatedAt(LocalDateTime.now());
-        order.setOrderItems(new ArrayList<OrderItem>());
 
         // 新規作成
         orderRepository.save(order);
@@ -139,7 +114,7 @@ public class ShoppingCartService {
      *
      * @param orderItemId 削除するorderItemId
      */
-    public void deleteByOrderItemId(UUID orderItemId){
+    public void deleteByOrderItemId(UUID orderItemId) {
         orderItemRepository.deleteById(orderItemId);
     }
 }
