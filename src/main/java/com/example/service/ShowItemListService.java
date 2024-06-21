@@ -1,14 +1,15 @@
 
 package com.example.service;
 
-import com.example.domain.Item;
-import com.example.dtos.SearchDto;
-import com.example.repository.ItemRepository;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import com.example.domain.Item;
+import com.example.dtos.SearchDto;
+import com.example.repository.ItemRepository;
 
 /**
  * 商品を表示したり、検索をするサービスクラス.
@@ -37,15 +38,12 @@ public class ShowItemListService {
      */
     public List<Item> search(SearchDto form) {
         if (form.getBreedId() == null && form.getColorList().isEmpty()) {
-            System.out.println("お金だけで検索");
             return itemRepository.findByPriceBetween(Double.parseDouble(form.getMinPrice()),
                     Double.parseDouble(form.getMaxPrice()));
         } else if (form.getBreedId() == null) {
-            System.out.println("お金と色で検索");
             return itemRepository.findByPriceBetweenAndColorIdIn(Double.parseDouble(form.getMinPrice()),
                     Double.parseDouble(form.getMaxPrice()), form.getColorList());
         } else {
-            System.out.println("全条件で検索");
             return itemRepository.findByPriceBetweenAndBreedIdAndColorIdIn(
                     Double.parseDouble(form.getMinPrice()),
                     Double.parseDouble(form.getMaxPrice()),

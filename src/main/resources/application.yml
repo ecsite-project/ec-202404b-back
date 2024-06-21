@@ -4,10 +4,12 @@ spring:
     url: jdbc:postgresql://localhost:5432/ec-202404b
     username: postgres
     password: postgres
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema-postgresql.sql
+    jpa:
+      defer-datasource-initialization: true
 jwt:
   expirationDays: 90
   secretKey: f5c760c5-bb7f-4910-8fd4-bc6892112512
-#
-#server:
-#  servlet:
-#    context-path: /samplebbs
