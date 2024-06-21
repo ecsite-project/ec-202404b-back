@@ -1,16 +1,17 @@
 
 package com.example.service;
 
-import com.example.domain.Item;
-import com.example.dtos.SearchDto;
-import com.example.repository.ItemRepository;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import com.example.domain.Item;
+import com.example.dtos.SearchDto;
+import com.example.repository.ItemRepository;
 
 /**
  * 商品を表示したり、検索をするサービスクラス.
@@ -27,7 +28,7 @@ public class ShowItemListService {
      *
      * @return 全商品
      */
-    public List<Item> findAll(){
+    public List<Item> findAll() {
         return itemRepository.findAll();
     }
 
@@ -54,39 +55,35 @@ public class ShowItemListService {
 
     public Page<Item> search(SearchDto condition, Pageable pageable) {
 
-
         /*
          * 条件: Min < 値段 < Max
          */
-        if (condition.getBreedId() == null && condition.getColorList().isEmpty()) {
+        if (!condition.getBreedId().isEmpty() && condition.getColorList().isEmpty()) {
             return itemRepository.findByPriceBetween(
                     Double.parseDouble(condition.getMinPrice()),
                     Double.parseDouble(condition.getMaxPrice()),
-                    pageable
-            );
+                    pageable);
         }
 
         /*
          * 条件: Min < 値段 < Max and 色リスト
          */
-        if (condition.getBreedId() == null) {
+        if (condition.getBreedId().isEmpty()) {
             return itemRepository.findByPriceBetweenAndColorIdIn(
                     Double.parseDouble(condition.getMinPrice()),
                     Double.parseDouble(condition.getMaxPrice()),
                     condition.getColorList(),
-                    pageable
-            );
+                    pageable);
         }
 
-         /*
+        /*
          * 条件: Min < 値段 < Max and 種別 and 色リスト
          */
         return itemRepository.findByPriceBetweenAndBreedIdAndColorIdIn(
-                    Double.parseDouble(condition.getMinPrice()),
-                    Double.parseDouble(condition.getMaxPrice()),
-                    UUID.fromString(condition.getBreedId()),
-                    condition.getColorList(),
-                    pageable
-        );
+                Double.parseDouble(condition.getMinPrice()),
+                Double.parseDouble(condition.getMaxPrice()),
+                UUID.fromString(condition.getBreedId()),
+                condition.getColorList(),
+                pageable);
     }
 }
