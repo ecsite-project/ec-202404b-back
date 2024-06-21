@@ -21,7 +21,7 @@ public final class PageResponseDto<T> {
 
     @Data
     @AllArgsConstructor
-    public final class Metadata {
+    public static final class Metadata {
         /** 現在のページ番号 */
         int currentPage;
         /** ページあたりのレコード数 */

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PageRequestDto {
     /** 現在のページ番号 */
-    int currentPage;
+    Integer currentPage;
     /** ページあたりのレコード数 */
-    int perPage;
+    Integer perPage;
 }
