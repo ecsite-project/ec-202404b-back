@@ -5,9 +5,10 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.domain.OptionGroup;
+import com.example.domain.Color;
 
 @Repository
-public interface OptionGroupRepository extends JpaRepository<OptionGroup, UUID> {
-    public OptionGroup findByName(String name);
+public interface ColorRepository extends JpaRepository<Color, UUID> {
+    public Color findByName(String name);
+
 }
