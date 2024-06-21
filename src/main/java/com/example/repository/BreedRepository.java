@@ -5,9 +5,9 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.domain.OptionGroup;
+import com.example.domain.Breed;
 
 @Repository
-public interface OptionGroupRepository extends JpaRepository<OptionGroup, UUID> {
-    public OptionGroup findByName(String name);
+public interface BreedRepository extends JpaRepository<Breed, UUID> {
+    public Breed findByName(String name);
 }

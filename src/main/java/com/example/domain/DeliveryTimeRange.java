@@ -1,9 +1,15 @@
 package com.example.domain;
 
+import java.time.Instant;
 import java.util.UUID;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +24,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "time_ranges")
 public class DeliveryTimeRange {
     @Id
@@ -25,6 +32,12 @@ public class DeliveryTimeRange {
     private UUID id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "time_range", nullable = false)
+    @Column(nullable = false)
     private TimeRange timeRange;
+
+    @CreatedDate
+    private Instant createdAt;
+
+    @LastModifiedDate
+    private Instant updatedAt;
 }
