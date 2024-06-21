@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.service.ShowItemDetailService;
 
-import lombok.val;
-
 /**
  * 詳細ページを操作するコントローラクラス.
  *
@@ -24,13 +22,16 @@ public class ShowItemDetailController {
     @Autowired
     private ShowItemDetailService service;
 
+    /**
+     * Getでもらった商品idを検索し、その商品を返す.
+     *　
+     * @param id 商品id
+     * @return 商品の詳細
+     */
     @GetMapping("")
     public ResponseEntity<?> showDetailPage(String id) {
         try {
-            // UUID uuid = UUID.fromString(id);
-
-            val uuid = UUID.fromString("97da7257-354a-45d5-96cc-b9e8a532587d");
-            return ResponseEntity.ok(service.getDetail(uuid));
+            return ResponseEntity.ok(service.getDetail(UUID.fromString(id)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
