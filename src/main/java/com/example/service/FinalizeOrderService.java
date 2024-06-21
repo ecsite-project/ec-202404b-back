@@ -30,7 +30,7 @@ public class FinalizeOrderService {
      */
     public void finalize(FinalizeOrderDto form) {
         Order order = orderRepository.findByStatusAndUserId(0, UUID.fromString(form.getUserId()));
-        // 0(未入金)->1(入金後)
+        // 0(注文前)->1(未入金)
         order.setStatus(1);
 
         //total price
