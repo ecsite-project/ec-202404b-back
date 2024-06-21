@@ -36,7 +36,7 @@ public class Order {
     @Column(nullable = false)
     private UUID userId;
 
-    @Column(nullable = false)
+    @Column(name = "status" , nullable = false)
     private Integer status;
 
     @Column(name = "total_price", nullable = false)
@@ -69,8 +69,8 @@ public class Order {
     @Column(name = "delivery_date", columnDefinition = "text", nullable = false)
     private LocalDate deliveryDate;
 
-    @Column(name = "delivery_time", columnDefinition = "text", nullable = false)
-    private UUID deliveryTime;
+    @Column(name = "delivery_time", nullable = false)
+    private TimeRange deliveryTime;
 
     @Column(name = "payment_method", columnDefinition = "text", nullable = false)
     private String paymentMethod;
