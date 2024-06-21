@@ -5,7 +5,10 @@ import com.example.domain.Order;
 import com.example.domain.OrderItem;
 import com.example.domain.TimeRange;
 import com.example.dtos.FinalizeOrderDto;
+import com.example.dtos.PaymentInfoDTO;
 import com.example.repository.OrderRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
@@ -23,12 +26,15 @@ public class FinalizeOrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private CreditCardService creditCardService;
+
     /**
      * 購入時の届け先や支払方法などを設定する.
      *
      * @param form 注文確認画面で入力した購入情報
      */
-    public void finalize(FinalizeOrderDto form) {
+    public String finalize(FinalizeOrderDto form, PaymentInfoDTO paymentInfo) throws JsonProcessingException {
         Order order = orderRepository.findByStatusAndUserId(0, UUID.fromString(form.getUserId()));
         // 0(注文前)->1(未入金)
         order.setStatus(1);
@@ -66,7 +72,23 @@ public class FinalizeOrderService {
         order.setDeliveryTime(TimeRange.RANGE_8_10);
         order.setPaymentMethod(form.getPaymentMethod());
         order.setUpdatedAt(LocalDateTime.now());
-        // 更新する
         orderRepository.save(order);
+
+        //クレカ処理
+        if(form.getPaymentMethod().equals("クレカ")){
+            paymentInfo.setOrderNumber(String.valueOf(order.getId()));
+            paymentInfo.setAmount(order.getTotalPrice());
+            val result = creditCardService.callApi(paymentInfo);
+            if(result.getStatus().equals("success")){
+                // 2は入金済み
+                order.setStatus(2);
+                // 更新する
+                orderRepository.save(order);
+            }else{
+                // エラーメッセージを出力
+                return result.getMessage();
+            }
+        }
+        return null;
     }
 }
