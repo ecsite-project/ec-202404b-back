@@ -1,11 +1,14 @@
 package com.example.service;
 
-import com.example.domain.User;
-import com.example.dtos.UserRegistrationDto;
-import com.example.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.example.domain.User;
+import com.example.dtos.UserRegistrationDto;
+import com.example.repositories.UserRepository;
+
+import lombok.val;
 
 /**
  *
@@ -29,7 +32,7 @@ public class CreateUserService {
             throw new Exception("Passwords do not match");
         }
 
-        User user = new User();
+        val user = new User();
         user.setFirstName(registrationDto.getFirstName());
         user.setLastName(registrationDto.getLastName());
         user.setEmail(registrationDto.getEmail());

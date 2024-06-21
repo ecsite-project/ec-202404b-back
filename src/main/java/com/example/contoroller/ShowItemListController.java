@@ -22,6 +22,8 @@ import com.example.dtos.PageResponseDto;
 import com.example.dtos.SearchDto;
 import com.example.service.ShowItemListService;
 
+import lombok.val;
+
 /**
  * 商品一覧表示をするコントローラクラス.
  *
@@ -45,9 +47,9 @@ public class ShowItemListController {
     @GetMapping("/search")
     public ResponseEntity<?> search() {
         try {
-            SearchDto form = new SearchDto();
+            val form = new SearchDto();
 
-            List<UUID> colorList = new ArrayList<>(List.of(
+            val colorList = new ArrayList<>(List.of(
                     UUID.fromString("1177eb09-8443-4670-b903-362d3cd135f0"),
                     UUID.fromString("146b2622-5838-49a0-8db2-599676e8b673")));
             form.setColorList(colorList);
