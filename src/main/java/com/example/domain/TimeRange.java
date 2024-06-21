@@ -13,6 +13,15 @@ public enum TimeRange {
         this.displayName = displayName;
     }
 
+    public static TimeRange fromDisplayName(String displayName){
+        for(TimeRange range : TimeRange.values()){
+            if(range.displayName.equals(displayName)){
+                return range;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with display name "+displayName);
+    }
+
     public String getDisplayName() {
         return displayName;
     }

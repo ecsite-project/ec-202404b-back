@@ -10,6 +10,7 @@ import com.example.repository.OrderRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ import java.util.UUID;
  *
  * @author takeru.chugun
  */
+@Service
 public class FinalizeOrderService {
     @Autowired
     private OrderRepository orderRepository;
@@ -30,9 +32,13 @@ public class FinalizeOrderService {
     private CreditCardService creditCardService;
 
     /**
-     * 購入時の届け先や支払方法などを設定する.
+     * 注文商品のリストとクレカのフォーム（クレカ払いのとき）を受け取り
+     * Order情報を更新する.
      *
-     * @param form 注文確認画面で入力した購入情報
+     * @param form 注文商品の詳細
+     * @param paymentInfo クレカ情報の詳細
+     * @return 支払いが成功したらnull、失敗したらerror
+     * @throws JsonProcessingException exception
      */
     public String finalize(FinalizeOrderDto form, PaymentInfoDTO paymentInfo) throws JsonProcessingException {
         Order order = orderRepository.findByStatusAndUserId(0, UUID.fromString(form.getUserId()));
@@ -62,30 +68,33 @@ public class FinalizeOrderService {
         order.setDestinationMunicipalities(form.getMunicipalities());
         order.setDestinationAddress(form.getAddress());
         order.setDestinationTel(form.getTelephone());
+
+        // 配達日時の設定
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        // それ以外の
         try {
             order.setDeliveryDate(LocalDate.parse(form.getDeliveryDate(), formatter));
         } catch (DateTimeParseException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
-        order.setDeliveryTime(TimeRange.RANGE_8_10);
+        order.setDeliveryTime(TimeRange.fromDisplayName(form.getDeliveryTime()));
+
         order.setPaymentMethod(form.getPaymentMethod());
         order.setUpdatedAt(LocalDateTime.now());
         orderRepository.save(order);
 
-        //クレカ処理
+        // 支払い方法がクレカの場合
         if(form.getPaymentMethod().equals("クレカ")){
             paymentInfo.setOrderNumber(String.valueOf(order.getId()));
             paymentInfo.setAmount(order.getTotalPrice());
             val result = creditCardService.callApi(paymentInfo);
             if(result.getStatus().equals("success")){
-                // 2は入金済み
+                // status = 2は入金済み
                 order.setStatus(2);
                 // 更新する
                 orderRepository.save(order);
             }else{
-                // エラーメッセージを出力
+                // クレカのエラーメッセージを出力
+                //
                 return result.getMessage();
             }
         }
