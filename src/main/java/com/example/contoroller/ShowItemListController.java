@@ -15,13 +15,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.dtos.SearchDto;
+import com.example.service.ShowItemListService;
+
 /**
  * 商品一覧表示をするコントローラクラス.
  *
  * @author takeru.chugun
  */
 @RestController
-    @RequestMapping("/api/getItemList")
+@RequestMapping("/api/getItemList")
 public class ShowItemListController {
     @Autowired
     private ShowItemListService service;
@@ -47,6 +56,7 @@ public class ShowItemListController {
             form.setColorList(colorList);
             form.setMaxPrice("100000");
             form.setMinPrice("60000");
+//            form.setBreedId("3854607f-019f-4591-9ab1-95ac496ba728");
             return ResponseEntity.ok(service.search(form));
         }catch(Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());

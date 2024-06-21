@@ -6,7 +6,6 @@ import com.example.dtos.SearchDto;
 import com.example.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -40,15 +39,12 @@ public class ShowItemListService {
      */
     public List<Item> search(SearchDto form) {
         if (form.getBreedId() == null && form.getColorList().isEmpty()) {
-            System.out.println("お金だけで検索");
             return itemRepository.findByPriceBetween(Double.parseDouble(form.getMinPrice()),
                     Double.parseDouble(form.getMaxPrice()));
         } else if (form.getBreedId() == null) {
-            System.out.println("お金と色で検索");
             return itemRepository.findByPriceBetweenAndColorIdIn(Double.parseDouble(form.getMinPrice()),
                     Double.parseDouble(form.getMaxPrice()), form.getColorList());
         } else {
-            System.out.println("全条件で検索");
             return itemRepository.findByPriceBetweenAndBreedIdAndColorIdIn(
                     Double.parseDouble(form.getMinPrice()),
                     Double.parseDouble(form.getMaxPrice()),

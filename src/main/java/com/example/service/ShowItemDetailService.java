@@ -1,14 +1,19 @@
 
 package com.example.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.example.domain.Item;
 import com.example.domain.OptionGroup;
 import com.example.repository.ItemRepository;
 import com.example.repository.OptionGroupRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.*;
 
 /**
  * アイテムの詳細を操作するサービスクラス.
