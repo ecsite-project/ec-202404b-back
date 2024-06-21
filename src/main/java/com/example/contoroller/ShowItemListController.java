@@ -65,7 +65,6 @@ public class ShowItemListController {
 
     @PostMapping("/page")
     public ResponseEntity<?> getPage(@RequestBody PagingRequest pagingRequest) {
-        System.out.println(pagingRequest);
         try {
             SearchDto condition = pagingRequest.search();
             int page = pagingRequest.page().getCurrentPage() - 1; // 1-based index to 0-based
@@ -75,7 +74,7 @@ public class ShowItemListController {
 
             int currentPage = items.getNumber() + 1; // 0-based index to 1-based
             int perPage = items.getSize();
-            int lastPage = items.getTotalPages();
+            int lastPage = items.getTotalPages() + 1;
             int total = (int) items.getTotalElements();
 
             PageResponseDto.Metadata metadata = new PageResponseDto.Metadata(currentPage, perPage, lastPage, total);
