@@ -1,9 +1,10 @@
 package com.example.repository;
 
-import com.example.domain.OrderItem;
+import java.util.UUID;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.UUID;
+import com.example.domain.OrderItem;
 
 public interface OrderItemRepository extends JpaRepository<OrderItem, UUID> {
 }

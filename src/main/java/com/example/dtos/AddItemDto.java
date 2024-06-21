@@ -1,11 +1,10 @@
 package com.example.dtos;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-import java.util.UUID;
 
 /**
  * 商品を追加するDTO.
