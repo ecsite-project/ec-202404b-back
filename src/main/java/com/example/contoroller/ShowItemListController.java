@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,11 +63,12 @@ public class ShowItemListController {
     record PagingRequest(SearchDto search, PageRequestDto page) {
     }
 
-    @GetMapping("/page")
+    @PostMapping("/page")
     public ResponseEntity<?> getPage(@RequestBody PagingRequest pagingRequest) {
+        System.out.println(pagingRequest);
         try {
             SearchDto condition = pagingRequest.search();
-            int page = pagingRequest.page().getCurrentPage();
+            int page = pagingRequest.page().getCurrentPage() - 1; // 1-based index to 0-based
             int size = pagingRequest.page().getPerPage();
             Pageable pageable = PageRequest.of(page, size);
             Page<Item> items = service.search(condition, pageable);
