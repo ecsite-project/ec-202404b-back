@@ -1,4 +1,5 @@
 package com.example.domain;
+
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -27,4 +28,3 @@ public class DeliveryTimeRange {
     @Column(name = "time_range", nullable = false)
     private TimeRange timeRange;
 }
-

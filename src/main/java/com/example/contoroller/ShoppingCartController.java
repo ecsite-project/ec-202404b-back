@@ -1,4 +1,5 @@
 package com.example.contoroller;
+
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import com.example.dtos.DeleteItemDto;
 import com.example.dtos.GetShoppingCartDto;
 import com.example.repository.OptionRepository;
 import com.example.service.ShoppingCartService;
-
 
 /**
  *
@@ -37,15 +37,15 @@ public class ShoppingCartController {
      */
     @PostMapping("/getShoppingCart")
     public ResponseEntity<?> showShoppingCart(@RequestBody GetShoppingCartDto form) {
-        try{
-            if(shoppingCartService.isUserId(UUID.fromString(form.getUserId()))){
-                //すでにOrderがあったら
+        try {
+            if (shoppingCartService.isUserId(UUID.fromString(form.getUserId()))) {
+                // すでにOrderがあったら
                 return ResponseEntity.ok(shoppingCartService.getShoppingCart(form));
             }
-            //なかったら
+            // なかったら
             shoppingCartService.createOrder(UUID.fromString(form.getUserId()));
             return ResponseEntity.ok(shoppingCartService.getShoppingCart(form));
-        }catch(Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -73,11 +73,11 @@ public class ShoppingCartController {
      * @return 成功かエラーメッセージ
      */
     @PostMapping("/deleteItem")
-    public ResponseEntity<?> delete(@RequestBody DeleteItemDto form){
-        try{
+    public ResponseEntity<?> delete(@RequestBody DeleteItemDto form) {
+        try {
             shoppingCartService.deleteByOrderItemId(UUID.fromString(form.getOrderItemId()));
             return ResponseEntity.ok("success deleting orderItem");
-        }catch(Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

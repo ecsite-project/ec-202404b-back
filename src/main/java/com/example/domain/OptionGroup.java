@@ -37,7 +37,7 @@ public class OptionGroup {
 
     @Column(nullable = false)
     private String inputType;
-    
+
     @OneToMany(mappedBy = "optionGroup", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Option> options = new ArrayList<>();
 }

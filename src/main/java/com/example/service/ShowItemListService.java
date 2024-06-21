@@ -26,7 +26,7 @@ public class ShowItemListService {
      *
      * @return 全商品
      */
-    public List<Item> findAll(){
+    public List<Item> findAll() {
         return itemRepository.findAll();
     }
 
