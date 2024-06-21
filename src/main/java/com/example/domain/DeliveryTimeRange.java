@@ -1,6 +1,10 @@
 package com.example.domain;
 
+import java.time.Instant;
 import java.util.UUID;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,6 +29,12 @@ public class DeliveryTimeRange {
     private UUID id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "time_range", nullable = false)
+    @Column(nullable = false)
     private TimeRange timeRange;
+
+    @CreatedDate
+    private Instant createdAt;
+
+    @LastModifiedDate
+    private Instant updatedAt;
 }
