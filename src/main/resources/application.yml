@@ -4,7 +4,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/ec-202404b
     username: postgres
     password: postgres
-#
-#server:
-#  servlet:
-#    context-path: /samplebbs
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema-postgresql.sql
+    jpa:
+      defer-datasource-initialization: true
