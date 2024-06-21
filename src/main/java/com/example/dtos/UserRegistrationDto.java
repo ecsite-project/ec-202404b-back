@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRegistrationDto {
-    /**名前*/
+    /** 名前 */
     private String firstName;
-    /**苗字*/
+    /** 苗字 */
     private String lastName;
     private String email;
     private String password;

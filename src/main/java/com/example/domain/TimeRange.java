@@ -9,11 +9,11 @@ public enum TimeRange {
 
     private final String displayName;
 
-    TimeRange(String displayName){
+    TimeRange(String displayName) {
         this.displayName = displayName;
     }
 
-    public String getDisplayName(){
+    public String getDisplayName() {
         return displayName;
     }
 }
