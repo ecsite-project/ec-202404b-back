@@ -14,11 +14,14 @@ import com.example.domain.Item;
  * @author takeru.chugun
  */
 @Repository
-public interface ItemRepository extends JpaRepository<Item,UUID>{
+public interface ItemRepository extends JpaRepository<Item, UUID> {
     /** 上限価格、下限価格、種別、色で検索 */
-    List<Item> findByPriceBetweenAndBreedIdAndColorIdIn(Double minPrice, Double maxPrice, UUID breed, List<UUID> colorIds);
+    List<Item> findByPriceBetweenAndBreedIdAndColorIdIn(Double minPrice, Double maxPrice, UUID breed,
+            List<UUID> colorIds);
+
     /** 上限価格、下限価格、色で検索 */
     List<Item> findByPriceBetweenAndColorIdIn(Double minPrice, Double maxPrice, List<UUID> colorIds);
+
     /** 上限価格、下限価格で検索 */
     List<Item> findByPriceBetween(Double minPrice, Double maxPrice);
 }

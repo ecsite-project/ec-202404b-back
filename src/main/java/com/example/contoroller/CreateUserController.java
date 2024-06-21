@@ -24,7 +24,7 @@ public class CreateUserController {
     private CreateUserService createUserService;
 
     @GetMapping
-    public ResponseEntity<String> showCreatePage(){
+    public ResponseEntity<String> showCreatePage() {
         return ResponseEntity.ok("Process at the front server");
     }
 

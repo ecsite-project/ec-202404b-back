@@ -44,10 +44,6 @@ public class OrderItem {
     private Order order;
 
     @ManyToMany
-    @JoinTable(
-            name = "order_item_options",
-            joinColumns = @JoinColumn(name = "order_item_id"),
-            inverseJoinColumns = @JoinColumn(name = "option_id")
-    )
+    @JoinTable(name = "order_item_options", joinColumns = @JoinColumn(name = "order_item_id"), inverseJoinColumns = @JoinColumn(name = "option_id"))
     private List<Option> options;
 }
