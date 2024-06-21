@@ -58,7 +58,7 @@ public class ShowItemListService {
         /*
          * 条件: Min < 値段 < Max
          */
-        if (!condition.getBreedId().isEmpty() && condition.getColorList().isEmpty()) {
+        if (condition.getBreedId().isEmpty() && condition.getColorList().isEmpty()) {
             return itemRepository.findByPriceBetween(
                     Double.parseDouble(condition.getMinPrice()),
                     Double.parseDouble(condition.getMaxPrice()),
