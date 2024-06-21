@@ -5,6 +5,9 @@ import com.example.domain.Item;
 import com.example.dtos.SearchDto;
 import com.example.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,5 +54,43 @@ public class ShowItemListService {
                     Double.parseDouble(form.getMaxPrice()),
                     UUID.fromString(form.getBreedId()), form.getColorList());
         }
+    }
+
+    public Page<Item> search(SearchDto condition, Pageable pageable) {
+
+
+        /*
+         * 条件: Min < 値段 < Max
+         */
+        if (condition.getBreedId() == null && condition.getColorList().isEmpty()) {
+            return itemRepository.findByPriceBetween(
+                    Double.parseDouble(condition.getMinPrice()),
+                    Double.parseDouble(condition.getMaxPrice()),
+                    pageable
+            );
+        }
+
+        /*
+         * 条件: Min < 値段 < Max and 色リスト
+         */
+        if (condition.getBreedId() == null) {
+            return itemRepository.findByPriceBetweenAndColorIdIn(
+                    Double.parseDouble(condition.getMinPrice()),
+                    Double.parseDouble(condition.getMaxPrice()),
+                    condition.getColorList(),
+                    pageable
+            );
+        }
+
+         /*
+         * 条件: Min < 値段 < Max and 種別 and 色リスト
+         */
+        return itemRepository.findByPriceBetweenAndBreedIdAndColorIdIn(
+                    Double.parseDouble(condition.getMinPrice()),
+                    Double.parseDouble(condition.getMaxPrice()),
+                    UUID.fromString(condition.getBreedId()),
+                    condition.getColorList(),
+                    pageable
+        );
     }
 }
