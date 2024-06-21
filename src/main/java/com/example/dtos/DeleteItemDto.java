@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class deleteItemDto {
+public class DeleteItemDto {
     /** 削除する商品のUUID(String) */
     private String orderItemId;
 }

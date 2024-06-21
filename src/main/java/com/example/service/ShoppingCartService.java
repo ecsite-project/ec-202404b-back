@@ -113,6 +113,7 @@ public class ShoppingCartService {
         var order = new Order();
         // user_idを設定する
         order.setUserId(userId);
+        // デフォルト値（not nullなので）
         order.setStatus(0);
         order.setTotalPrice(0);
         order.setOrderDate(LocalDate.now());
@@ -132,5 +133,14 @@ public class ShoppingCartService {
 
         // 新規作成
         orderRepository.save(order);
+    }
+
+    /**
+     * カート情報からそのidに該当するorderItemを削除する.
+     *
+     * @param orderItemId 削除するorderItemId
+     */
+    public void deleteByOrderItemId(UUID orderItemId){
+        orderItemRepository.deleteById(orderItemId);
     }
 }
