@@ -1,5 +1,6 @@
 package com.example.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,7 +29,7 @@ public class Order {
     private UUID id;
 
     @Column(nullable = false)
-    private UUID user_id;
+    private UUID userId;
 
     @Column(nullable = false)
     private Integer status;

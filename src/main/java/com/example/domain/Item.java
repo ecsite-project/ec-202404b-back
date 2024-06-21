@@ -1,5 +1,6 @@
 package com.example.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -59,5 +60,6 @@ public class Item {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<OrderItem> orderItems;
 }

@@ -38,5 +38,6 @@ public class Option {
 
     //here
     @ManyToMany(mappedBy = "options")
+    @JsonIgnore
     private List<OrderItem> orderItems;
 }
