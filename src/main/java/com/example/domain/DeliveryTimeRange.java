@@ -20,6 +20,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * optionで使用する配達時間のドメインクラス.
+ *
+ * @author tugukurechan
+ * @author char 5742
+ */
 @Entity
 @Data
 @NoArgsConstructor

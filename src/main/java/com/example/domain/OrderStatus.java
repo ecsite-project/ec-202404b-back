@@ -1,5 +1,10 @@
 package com.example.domain;
 
+/**
+ * 注文のステータスを表すEnumクラス.
+ *
+ * @char5742
+ */
 public enum OrderStatus {
     BEFORE_ORDER(0, "注文前"),
     UNPAID(1, "未入金"),

@@ -7,6 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import com.example.domain.OptionGroup;
 
+/**
+ * オプションのグループを操作するリポジトリクラス.
+ *
+ * @author tugukurechan
+ */
 @Repository
 public interface OptionGroupRepository extends JpaRepository<OptionGroup, UUID> {
     public OptionGroup findByName(String name);

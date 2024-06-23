@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.example.domain.Item;
 
 /**
- * 表示と検索のリポジトリクラス
+ * 商品表示と検索のリポジトリクラス
  *
  * @author takeru.chugun
  */
