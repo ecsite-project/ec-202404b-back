@@ -62,7 +62,7 @@ public class Option {
     private OptionGroup optionGroup;
 
     // here
-    @ManyToMany(mappedBy = "options")
-    @JsonIgnore
-    private List<OrderItem> orderItems;
+//    @ManyToMany(mappedBy = "options")
+//    @JsonIgnore
+//    private List<OrderItem> orderItems;
 }
