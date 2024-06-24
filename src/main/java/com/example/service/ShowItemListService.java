@@ -11,7 +11,11 @@ import org.springframework.stereotype.Service;
 
 import com.example.domain.Item;
 import com.example.dtos.SearchDto;
+import com.example.repository.BreedRepository;
+import com.example.repository.ColorRepository;
 import com.example.repository.ItemRepository;
+
+import lombok.val;
 
 /**
  * 商品を表示したり、検索をするサービスクラス.
@@ -22,6 +26,12 @@ import com.example.repository.ItemRepository;
 public class ShowItemListService {
     @Autowired
     private ItemRepository itemRepository;
+
+    @Autowired
+    private BreedRepository breedRepository;
+
+    @Autowired
+    private ColorRepository colorRepository;
 
     /**
      * 全商品を取得する.
@@ -39,26 +49,32 @@ public class ShowItemListService {
      * @return 検索結果
      */
     public List<Item> search(SearchDto form) {
-        if (form.getBreedId() == null && form.getColorList().isEmpty()) {
+        List<UUID> colorIdList = form.getColorList().stream().map(colorRepository::findByName).map(e -> e.getId())
+                .toList();
+        if (form.getBreed() == null && colorIdList.isEmpty()) {
             return itemRepository.findByPriceBetween(Double.parseDouble(form.getMinPrice()),
                     Double.parseDouble(form.getMaxPrice()));
-        } else if (form.getBreedId() == null) {
+        } else if (form.getBreed() == null) {
             return itemRepository.findByPriceBetweenAndColorIdIn(Double.parseDouble(form.getMinPrice()),
-                    Double.parseDouble(form.getMaxPrice()), form.getColorList());
+                    Double.parseDouble(form.getMaxPrice()), colorIdList);
         } else {
+            val breed = breedRepository.findByName(form.getBreed());
             return itemRepository.findByPriceBetweenAndBreedIdAndColorIdIn(
                     Double.parseDouble(form.getMinPrice()),
                     Double.parseDouble(form.getMaxPrice()),
-                    UUID.fromString(form.getBreedId()), form.getColorList());
+                    breed.getId(), colorIdList);
         }
     }
 
     public Page<Item> search(SearchDto condition, Pageable pageable) {
+        List<UUID> colorIdList = condition.getColorList().stream().map(colorRepository::findByName).map(e -> e.getId())
+                .toList();
+        val hasNotBreed = condition.getBreed().isEmpty();
 
         /*
          * 条件: Min < 値段 < Max
          */
-        if (condition.getBreedId().isEmpty() && condition.getColorList().isEmpty()) {
+        if (hasNotBreed && colorIdList.isEmpty()) {
             return itemRepository.findByPriceBetween(
                     Double.parseDouble(condition.getMinPrice()),
                     Double.parseDouble(condition.getMaxPrice()),
@@ -68,22 +84,23 @@ public class ShowItemListService {
         /*
          * 条件: Min < 値段 < Max and 色リスト
          */
-        if (condition.getBreedId().isEmpty()) {
+        if (hasNotBreed) {
             return itemRepository.findByPriceBetweenAndColorIdIn(
                     Double.parseDouble(condition.getMinPrice()),
                     Double.parseDouble(condition.getMaxPrice()),
-                    condition.getColorList(),
+                    colorIdList,
                     pageable);
         }
 
         /*
          * 条件: Min < 値段 < Max and 種別 and 色リスト
          */
+        val breed = breedRepository.findByName(condition.getBreed());
         return itemRepository.findByPriceBetweenAndBreedIdAndColorIdIn(
                 Double.parseDouble(condition.getMinPrice()),
                 Double.parseDouble(condition.getMaxPrice()),
-                UUID.fromString(condition.getBreedId()),
-                condition.getColorList(),
+                breed.getId(),
+                colorIdList,
                 pageable);
     }
 }
