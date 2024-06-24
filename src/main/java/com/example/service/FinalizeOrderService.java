@@ -83,7 +83,7 @@ public class FinalizeOrderService {
 
         // 支払い方法がクレカの場合
         // 現金払いの場合はstatus=UNPAID(1)のまま
-        if(form.getPaymentMethod().equals("クレカ")){
+        if(form.getPaymentMethod().equals("Credit Card")){
             paymentInfo.setOrderNumber(String.valueOf(order.getId()));
             paymentInfo.setAmount(order.getTotalPrice());
             val result = creditCardService.callApi(paymentInfo);
@@ -91,10 +91,11 @@ public class FinalizeOrderService {
                 // status = PAID(2)は入金済み
                 order.setStatus(OrderStatus.PAID);
                 orderRepository.save(order);
+                return result.getStatus();
             }else{
                 // クレカのエラーメッセージを出力
                 //
-                return result.getMessage();
+                return result.getStatus();
             }
         }
         return null;

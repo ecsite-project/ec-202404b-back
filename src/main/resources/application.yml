@@ -10,7 +10,7 @@ spring:
   #     schema-locations: classpath:schema-postgresql.sql
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     # defer-datasource-initialization: true
 
 jwt:

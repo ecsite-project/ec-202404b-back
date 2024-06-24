@@ -33,7 +33,7 @@ public class FinalizeOrderController {
             FinalizeOrderDto form = new FinalizeOrderDto();
             PaymentInfoDTO paymentInfo = new PaymentInfoDTO();
 //            formの作成
-            form.setUserId("07a7a236-79c4-4a0b-8361-1c2e686fec97");
+            form.setUserId("e091ed15-efa4-4be6-8d71-400835e35e5b");
             form.setName("中郡");
             form.setEmail("rakus@co.jp");
             form.setZipcode("123-4567");
@@ -46,8 +46,8 @@ public class FinalizeOrderController {
             form.setPaymentMethod("Credit Card");
 
             // クレカ用のフォームの作成
-            paymentInfo.setUserId("07a7a236-79c4-4a0b-8361-1c2e686fec97");
-            paymentInfo.setOrderNumber("07a7a236-79c4-4a0b-8361-1c2e686fec95");
+            paymentInfo.setUserId("e091ed15-efa4-4be6-8d71-400835e35e5b");
+            paymentInfo.setOrderNumber("4316ab38-9f4c-448b-b78d-076ced054691");
             paymentInfo.setAmount(20000);
             paymentInfo.setCardNumber("1111222233334444");
             paymentInfo.setCardExpYear(2025);
