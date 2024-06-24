@@ -69,6 +69,12 @@ public class ShowItemListController {
     record PagingRequest(SearchDto search, PageRequestDto page) {
     }
 
+    /**
+     * 商品一覧をページ付きで表示.
+     *
+     * @param pagingRequest ページ機能のリクエスト
+     * @return リスト化された商品一覧
+     */
     @PostMapping("/page")
     public ResponseEntity<?> getPage(@RequestBody PagingRequest pagingRequest) {
         try {
