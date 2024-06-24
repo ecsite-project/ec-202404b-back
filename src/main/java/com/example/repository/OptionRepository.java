@@ -16,4 +16,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OptionRepository extends JpaRepository<Option, UUID> {
     List<Option> findByIdIn(List<UUID> uuidList);
+    Option findByName(String name);
 }
