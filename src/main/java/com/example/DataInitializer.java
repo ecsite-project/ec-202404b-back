@@ -1,6 +1,9 @@
 package com.example;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -41,32 +44,6 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     private UserRepository userRepository;
-
-    private void setUpUsers() {
-        if (userRepository.count() > 0) {
-            return;
-        }
-        userRepository.save(User.builder().firstName("Taro")
-                .lastName("Yamada")
-                .email("taro.yamada@example.com")
-                .password(passwordEncoder.encode("password123"))
-                .zipcode("123-4567")
-                .prefecture("Tokyo")
-                .municipalities("Shibuya")
-                .address("Shibuya 1-1-1")
-                .telephone("090-1234-5678")
-                .build());
-
-        userRepository.save(User.builder().firstName("Hanako")
-                .lastName("Suzuki")
-                .email("hanako.suzuki@example.com")
-                .password(passwordEncoder.encode("password123"))
-                .zipcode("765-4321")
-                .prefecture("Osaka")
-                .municipalities("Naniwa")
-                .address("Naniwa 2-2-2")
-                .telephone("080-8765-4321").build());
-    }
 
     @Autowired
     private BreedRepository breedRepository;
@@ -190,6 +167,65 @@ public class DataInitializer implements CommandLineRunner {
                 .birthDay(LocalDate.of(2023, 9, 1))
                 .breed(breedRepository.findByName("Dachshund"))
                 .color(colorRepository.findByName("Black")).build());
+    }
+
+    private void setUpUsers() {
+        if (userRepository.count() > 0) {
+            return;
+        }
+        User user1 = User.builder().firstName("Taro")
+                .lastName("Yamada")
+                .email("taro.yamada@example.com")
+                .password(passwordEncoder.encode("password123"))
+                .zipcode("123-4567")
+                .prefecture("Tokyo")
+                .municipalities("Shibuya")
+                .address("Shibuya 1-1-1")
+                .telephone("090-1234-5678")
+                .build();
+        User user2 = User.builder().firstName("Hanako")
+                .lastName("Suzuki")
+                .email("hanako.suzuki@example.com")
+                .password(passwordEncoder.encode("password123"))
+                .zipcode("765-4321")
+                .prefecture("Osaka")
+                .municipalities("Naniwa")
+                .address("Naniwa 2-2-2")
+                .telephone("080-8765-4321").build();
+        // お気に入りリストの作成(testUserそれぞれに2つのお気に入り商品を追加)
+        List<Item> allItems = itemRepository.findAll();
+        List<UUID> user1Favorites = new ArrayList<>();
+        List<UUID> user2Favorites = new ArrayList<>();
+        user1Favorites.add(allItems.get(0).getId());
+        user1Favorites.add(allItems.get(1).getId());
+        user1.setFavoriteItems(user1Favorites);
+        userRepository.save(user1);
+        user2Favorites.add(allItems.get(2).getId());
+        user2Favorites.add(allItems.get(3).getId());
+        user2.setFavoriteItems(user2Favorites);
+        userRepository.save(user2);
+
+//        前のやつ
+//        userRepository.save(User.builder().firstName("Taro")
+//                .lastName("Yamada")
+//                .email("taro.yamada@example.com")
+//                .password(passwordEncoder.encode("password123"))
+//                .zipcode("123-4567")
+//                .prefecture("Tokyo")
+//                .municipalities("Shibuya")
+//                .address("Shibuya 1-1-1")
+//                .telephone("090-1234-5678")
+//                .build());
+//
+//        userRepository.save(User.builder().firstName("Hanako")
+//                .lastName("Suzuki")
+//                .email("hanako.suzuki@example.com")
+//                .password(passwordEncoder.encode("password123"))
+//                .zipcode("765-4321")
+//                .prefecture("Osaka")
+//                .municipalities("Naniwa")
+//                .address("Naniwa 2-2-2")
+//                .telephone("080-8765-4321").build());
     }
 
     @Autowired
