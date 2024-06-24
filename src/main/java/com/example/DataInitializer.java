@@ -35,6 +35,9 @@ public class DataInitializer implements CommandLineRunner {
     private UserRepository userRepository;
 
     private void setUpUsers() {
+        if (userRepository.count() > 0) {
+            return;
+        }
         userRepository.save(User.builder().firstName("Taro")
                 .lastName("Yamada")
                 .email("taro.yamada@example.com")
@@ -62,6 +65,9 @@ public class DataInitializer implements CommandLineRunner {
     private BreedRepository breedRepository;
 
     private void setUpBreed() {
+        if (breedRepository.count() > 0) {
+            return;
+        }
         breedRepository.save(Breed.builder().name("Shiba Inu").build());
         breedRepository.save(Breed.builder().name("Labrador Retriever").build());
         breedRepository.save(Breed.builder().name("German Shepherd").build());
@@ -77,6 +83,9 @@ public class DataInitializer implements CommandLineRunner {
     private ColorRepository colorRepository;
 
     private void setUpColor() {
+        if (colorRepository.count() > 0) {
+            return;
+        }
         colorRepository.save(Color.builder().name("Black").build());
         colorRepository.save(Color.builder().name("White").build());
         colorRepository.save(Color.builder().name("Brown").build());
@@ -92,6 +101,9 @@ public class DataInitializer implements CommandLineRunner {
     private ItemRepository itemRepository;
 
     private void setUpItem() {
+        if (itemRepository.count() > 0) {
+            return;
+        }
         itemRepository.save(Item.builder()
                 .description("Friendly Shiba Inu")
                 .price(300000)
@@ -178,6 +190,9 @@ public class DataInitializer implements CommandLineRunner {
     private OptionGroupRepository optionGroupRepository;
 
     private void setUpOptionGroup() {
+        if (optionGroupRepository.count() > 0) {
+            return;
+        }
         optionGroupRepository.save(OptionGroup.builder()
                 .name("エサ")
                 .inputType("radio")
@@ -212,6 +227,9 @@ public class DataInitializer implements CommandLineRunner {
     private OptionRepository optionRepository;
 
     private void setUpOptions() {
+        if (optionRepository.count() > 0) {
+            return;
+        }
         // エサオプション
         optionRepository.save(Option.builder()
                 .name("エサA")
