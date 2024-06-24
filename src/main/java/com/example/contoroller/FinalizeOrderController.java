@@ -1,16 +1,15 @@
 
 package com.example.contoroller;
 
-import org.apache.coyote.RequestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dtos.FinalizeOrderDto;
 import com.example.dtos.PaymentInfoDTO;
 import com.example.service.FinalizeOrderService;
-
-import java.util.UUID;
 
 /**
  * 注文確認画面を操作するコントローラクラス.

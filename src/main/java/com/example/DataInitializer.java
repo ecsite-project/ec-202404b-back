@@ -1,23 +1,32 @@
 package com.example;
 
 import java.time.LocalDate;
-import java.util.List;
 
-import com.example.domain.*;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.example.domain.Breed;
+import com.example.domain.Color;
+import com.example.domain.Item;
+import com.example.domain.Option;
+import com.example.domain.OptionGroup;
+import com.example.domain.Order;
+import com.example.domain.OrderItem;
+import com.example.domain.OrderStatus;
+import com.example.domain.TimeRange;
+import com.example.domain.User;
 import com.example.repositories.UserRepository;
 import com.example.repository.BreedRepository;
 import com.example.repository.ColorRepository;
 import com.example.repository.ItemRepository;
 import com.example.repository.OptionGroupRepository;
 import com.example.repository.OptionRepository;
-import com.example.repository.OrderRepository;
 import com.example.repository.OrderItemRepository;
+import com.example.repository.OrderRepository;
+
+import lombok.val;
 
 /**
  * データの初期化.
