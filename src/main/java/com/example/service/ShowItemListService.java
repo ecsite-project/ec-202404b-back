@@ -59,7 +59,7 @@ public class ShowItemListService {
          * 条件: Min < 値段 < Max
          */
         if (condition.getBreedId().isEmpty() && condition.getColorList().isEmpty()) {
-            return itemRepository.findByPriceBetween(
+            return itemRepository.findByPriceBetweenOrderByCreatedAtDesc(
                     Double.parseDouble(condition.getMinPrice()),
                     Double.parseDouble(condition.getMaxPrice()),
                     pageable);
@@ -69,7 +69,7 @@ public class ShowItemListService {
          * 条件: Min < 値段 < Max and 色リスト
          */
         if (condition.getBreedId().isEmpty()) {
-            return itemRepository.findByPriceBetweenAndColorIdIn(
+            return itemRepository.findByPriceBetweenAndColorIdInOrderByCreatedAtDesc(
                     Double.parseDouble(condition.getMinPrice()),
                     Double.parseDouble(condition.getMaxPrice()),
                     condition.getColorList(),
@@ -79,7 +79,7 @@ public class ShowItemListService {
         /*
          * 条件: Min < 値段 < Max and 種別 and 色リスト
          */
-        return itemRepository.findByPriceBetweenAndBreedIdAndColorIdIn(
+        return itemRepository.findByPriceBetweenAndBreedIdAndColorIdInOrderBYCreatedAtDesc(
                 Double.parseDouble(condition.getMinPrice()),
                 Double.parseDouble(condition.getMaxPrice()),
                 UUID.fromString(condition.getBreedId()),

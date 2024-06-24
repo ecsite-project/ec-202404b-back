@@ -29,14 +29,14 @@ public interface ItemRepository extends JpaRepository<Item, UUID> {
 
     /*---------ページング用---------*/
     /** 上限価格、下限価格、種別、色で検索 */
-    Page<Item> findByPriceBetweenAndBreedIdAndColorIdIn(Double minPrice, Double maxPrice, UUID breed,
+    Page<Item> findByPriceBetweenAndBreedIdAndColorIdInOrderBYCreatedAtDesc(Double minPrice, Double maxPrice, UUID breed,
             List<UUID> colorIds, Pageable pageable);
 
     /** 上限価格、下限価格、色で検索 */
-    Page<Item> findByPriceBetweenAndColorIdIn(Double minPrice, Double maxPrice, List<UUID> colorIds, Pageable pageable);
+    Page<Item> findByPriceBetweenAndColorIdInOrderByCreatedAtDesc(Double minPrice, Double maxPrice, List<UUID> colorIds, Pageable pageable);
 
     /** 上限価格、下限価格で検索 */
-    Page<Item> findByPriceBetween(Double minPrice, Double maxPrice, Pageable pageable);
+    Page<Item> findByPriceBetweenOrderByCreatedAtDesc(Double minPrice, Double maxPrice, Pageable pageable);
 
     Item findByDescription(String description);
 }
