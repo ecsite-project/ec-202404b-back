@@ -200,31 +200,31 @@ public class DataInitializer implements CommandLineRunner {
             return;
         }
         optionGroupRepository.save(OptionGroup.builder()
-                .name("エサ")
+                .name("food")
                 .inputType("radio")
                 .build());
         optionGroupRepository.save(OptionGroup.builder()
-                .name("おもちゃ")
+                .name("toy")
                 .inputType("checkbox")
                 .build());
         optionGroupRepository.save(OptionGroup.builder()
-                .name("トイレ")
+                .name("toilet")
                 .inputType("radio")
                 .build());
         optionGroupRepository.save(OptionGroup.builder()
-                .name("ケージ")
+                .name("cage")
                 .inputType("radio")
                 .build());
         optionGroupRepository.save(OptionGroup.builder()
-                .name("首輪")
+                .name("collar")
                 .inputType("radio")
                 .build());
         optionGroupRepository.save(OptionGroup.builder()
-                .name("ベッド")
+                .name("bed")
                 .inputType("radio")
                 .build());
         optionGroupRepository.save(OptionGroup.builder()
-                .name("お手入れ用品")
+                .name("care")
                 .inputType("checkbox")
                 .build());
     }
@@ -240,144 +240,144 @@ public class DataInitializer implements CommandLineRunner {
         optionRepository.save(Option.builder()
                 .name("なし")
                 .price(0)
-                .optionGroup(optionGroupRepository.findByName("エサ"))
+                .optionGroup(optionGroupRepository.findByName("food"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("エサA")
                 .price(500)
-                .optionGroup(optionGroupRepository.findByName("エサ"))
+                .optionGroup(optionGroupRepository.findByName("food"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("エサB")
                 .price(600)
-                .optionGroup(optionGroupRepository.findByName("エサ"))
+                .optionGroup(optionGroupRepository.findByName("food"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("エサC")
                 .price(700)
-                .optionGroup(optionGroupRepository.findByName("エサ"))
+                .optionGroup(optionGroupRepository.findByName("food"))
                 .build());
 
         // おもちゃオプション
         optionRepository.save(Option.builder()
                 .name("おもちゃA")
                 .price(1500)
-                .optionGroup(optionGroupRepository.findByName("おもちゃ"))
+                .optionGroup(optionGroupRepository.findByName("toy"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("おもちゃB")
                 .price(2000)
-                .optionGroup(optionGroupRepository.findByName("おもちゃ"))
+                .optionGroup(optionGroupRepository.findByName("toy"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("おもちゃC")
                 .price(2500)
-                .optionGroup(optionGroupRepository.findByName("おもちゃ"))
+                .optionGroup(optionGroupRepository.findByName("toy"))
                 .build());
 
         // トイレオプション
         optionRepository.save(Option.builder()
                 .name("なし")
                 .price(0)
-                .optionGroup(optionGroupRepository.findByName("トイレ"))
+                .optionGroup(optionGroupRepository.findByName("toilet"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("トイレA")
                 .price(2500)
-                .optionGroup(optionGroupRepository.findByName("トイレ"))
+                .optionGroup(optionGroupRepository.findByName("toilet"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("トイレB")
                 .price(3000)
-                .optionGroup(optionGroupRepository.findByName("トイレ"))
+                .optionGroup(optionGroupRepository.findByName("toilet"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("トイレC")
                 .price(3500)
-                .optionGroup(optionGroupRepository.findByName("トイレ"))
+                .optionGroup(optionGroupRepository.findByName("toilet"))
                 .build());
 
         // ケージオプション
         optionRepository.save(Option.builder()
                 .name("なし")
                 .price(0)
-                .optionGroup(optionGroupRepository.findByName("ケージ"))
+                .optionGroup(optionGroupRepository.findByName("cage"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("ケージA")
                 .price(8000)
-                .optionGroup(optionGroupRepository.findByName("ケージ"))
+                .optionGroup(optionGroupRepository.findByName("cage"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("ケージB")
                 .price(10000)
-                .optionGroup(optionGroupRepository.findByName("ケージ"))
+                .optionGroup(optionGroupRepository.findByName("cage"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("ケージC")
                 .price(12000)
-                .optionGroup(optionGroupRepository.findByName("ケージ"))
+                .optionGroup(optionGroupRepository.findByName("cage"))
                 .build());
 
         // 首輪オプション
         optionRepository.save(Option.builder()
                 .name("なし")
                 .price(0)
-                .optionGroup(optionGroupRepository.findByName("首輪"))
+                .optionGroup(optionGroupRepository.findByName("collar"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("首輪A")
                 .price(1000)
-                .optionGroup(optionGroupRepository.findByName("首輪"))
+                .optionGroup(optionGroupRepository.findByName("collar"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("首輪B")
                 .price(1500)
-                .optionGroup(optionGroupRepository.findByName("首輪"))
+                .optionGroup(optionGroupRepository.findByName("collar"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("首輪C")
                 .price(1400)
-                .optionGroup(optionGroupRepository.findByName("首輪"))
+                .optionGroup(optionGroupRepository.findByName("collar"))
                 .build());
 
         // ベッドオプション
         optionRepository.save(Option.builder()
                 .name("なし")
                 .price(0)
-                .optionGroup(optionGroupRepository.findByName("ベッド"))
+                .optionGroup(optionGroupRepository.findByName("bed"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("ベッドA")
                 .price(3000)
-                .optionGroup(optionGroupRepository.findByName("ベッド"))
+                .optionGroup(optionGroupRepository.findByName("bed"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("ベッドB")
                 .price(3500)
-                .optionGroup(optionGroupRepository.findByName("ベッド"))
+                .optionGroup(optionGroupRepository.findByName("bed"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("ベッドC")
                 .price(4000)
-                .optionGroup(optionGroupRepository.findByName("ベッド"))
+                .optionGroup(optionGroupRepository.findByName("bed"))
                 .build());
 
         // お手入れ用品オプション
         optionRepository.save(Option.builder()
                 .name("ブラシ")
                 .price(500)
-                .optionGroup(optionGroupRepository.findByName("お手入れ用品"))
+                .optionGroup(optionGroupRepository.findByName("care"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("シャンプー")
                 .price(800)
-                .optionGroup(optionGroupRepository.findByName("お手入れ用品"))
+                .optionGroup(optionGroupRepository.findByName("care"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("爪切り")
                 .price(600)
-                .optionGroup(optionGroupRepository.findByName("お手入れ用品"))
+                .optionGroup(optionGroupRepository.findByName("care"))
                 .build());
     }
 
