@@ -24,4 +24,6 @@ public interface ItemRepository extends JpaRepository<Item, UUID> {
 
     /** 上限価格、下限価格で検索 */
     List<Item> findByPriceBetween(Double minPrice, Double maxPrice);
+
+    Item findByDescription(String description);
 }

@@ -1,9 +1,8 @@
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/ec-202404b
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: miyawakiriku
   # sql:
   #   init:
   #     mode: always
