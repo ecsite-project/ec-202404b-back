@@ -238,6 +238,11 @@ public class DataInitializer implements CommandLineRunner {
         }
         // エサオプション
         optionRepository.save(Option.builder()
+                .name("なし")
+                .price(0)
+                .optionGroup(optionGroupRepository.findByName("エサ"))
+                .build());
+        optionRepository.save(Option.builder()
                 .name("エサA")
                 .price(500)
                 .optionGroup(optionGroupRepository.findByName("エサ"))
@@ -272,6 +277,11 @@ public class DataInitializer implements CommandLineRunner {
 
         // トイレオプション
         optionRepository.save(Option.builder()
+                .name("なし")
+                .price(0)
+                .optionGroup(optionGroupRepository.findByName("トイレ"))
+                .build());
+        optionRepository.save(Option.builder()
                 .name("トイレA")
                 .price(2500)
                 .optionGroup(optionGroupRepository.findByName("トイレ"))
@@ -288,6 +298,11 @@ public class DataInitializer implements CommandLineRunner {
                 .build());
 
         // ケージオプション
+        optionRepository.save(Option.builder()
+                .name("なし")
+                .price(0)
+                .optionGroup(optionGroupRepository.findByName("ケージ"))
+                .build());
         optionRepository.save(Option.builder()
                 .name("ケージA")
                 .price(8000)
@@ -306,6 +321,11 @@ public class DataInitializer implements CommandLineRunner {
 
         // 首輪オプション
         optionRepository.save(Option.builder()
+                .name("なし")
+                .price(0)
+                .optionGroup(optionGroupRepository.findByName("首輪"))
+                .build());
+        optionRepository.save(Option.builder()
                 .name("首輪A")
                 .price(1000)
                 .optionGroup(optionGroupRepository.findByName("首輪"))
@@ -322,6 +342,11 @@ public class DataInitializer implements CommandLineRunner {
                 .build());
 
         // ベッドオプション
+        optionRepository.save(Option.builder()
+                .name("なし")
+                .price(0)
+                .optionGroup(optionGroupRepository.findByName("ベッド"))
+                .build());
         optionRepository.save(Option.builder()
                 .name("ベッドA")
                 .price(3000)
