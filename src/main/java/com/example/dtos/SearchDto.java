@@ -23,5 +23,5 @@ public class SearchDto {
     /** 色 */
     private List<UUID> colorList;
     /** 種 */
-    private String breedId;
+    private String breedId = "";
 }

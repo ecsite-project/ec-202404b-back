@@ -1,6 +1,7 @@
 package com.example;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -43,7 +44,7 @@ public class DataInitializer implements CommandLineRunner {
     private UserRepository userRepository;
 
     private void setUpUsers() {
-        if (userRepository.count() > 1){
+        if (userRepository.count() > 0) {
             return;
         }
         userRepository.save(User.builder().firstName("Taro")
@@ -72,7 +73,7 @@ public class DataInitializer implements CommandLineRunner {
     private BreedRepository breedRepository;
 
     private void setUpBreed() {
-        if (breedRepository.count() > 1){
+        if (breedRepository.count() > 0) {
             return;
         }
         breedRepository.save(Breed.builder().name("Shiba Inu").build());
@@ -90,7 +91,7 @@ public class DataInitializer implements CommandLineRunner {
     private ColorRepository colorRepository;
 
     private void setUpColor() {
-        if (colorRepository.count() > 1){
+        if (colorRepository.count() > 0) {
             return;
         }
         colorRepository.save(Color.builder().name("Black").build());
@@ -108,7 +109,7 @@ public class DataInitializer implements CommandLineRunner {
     private ItemRepository itemRepository;
 
     private void setUpItem() {
-        if (itemRepository.count() > 1){
+        if (itemRepository.count() > 0) {
             return;
         }
         itemRepository.save(Item.builder()
@@ -196,7 +197,7 @@ public class DataInitializer implements CommandLineRunner {
     private OptionGroupRepository optionGroupRepository;
 
     private void setUpOptionGroup() {
-        if (optionGroupRepository.count() > 1){
+        if (optionGroupRepository.count() > 0) {
             return;
         }
         optionGroupRepository.save(OptionGroup.builder()
@@ -233,7 +234,7 @@ public class DataInitializer implements CommandLineRunner {
     private OptionRepository optionRepository;
 
     private void setUpOptions() {
-        if (optionRepository.count() > 1){
+        if (optionRepository.count() > 0) {
             return;
         }
         // エサオプション
@@ -364,9 +365,6 @@ public class DataInitializer implements CommandLineRunner {
 
 
     private void setUpOrders() {
-        if (orderRepository.count() > 1){
-            return;
-        }
         Order order1 = orderRepository.save(Order.builder()
                 .userId(userRepository.findByEmail("taro.yamada@example.com").getId())
                 .status(OrderStatus.BEFORE_ORDER)
