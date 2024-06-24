@@ -1,7 +1,7 @@
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5433/ec-202404b
+    url: jdbc:postgresql://localhost:5432/ec-202404b
     username: postgres
     password: postgres
   # sql:
@@ -10,7 +10,7 @@ spring:
   #     schema-locations: classpath:schema-postgresql.sql
   jpa:
     hibernate:
-      ddl-auto: update # create にすると毎回テーブルがリセットされます
+      ddl-auto: create # create にすると毎回テーブルがリセットされます
     # defer-datasource-initialization: true
 
 jwt:
