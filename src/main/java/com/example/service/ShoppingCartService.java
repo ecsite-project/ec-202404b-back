@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * ショッピングカートを操作するサービスクラス.
  *
- * @author takeru.chugun
+ * @author tugukurechan
  */
 @Service
 public class ShoppingCartService {

@@ -25,7 +25,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * OrderItemのドメインクラス.
+ * 注文された商品のドメインクラス.
  *
  * @author takeru.chugun
  * @author mun

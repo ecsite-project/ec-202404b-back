@@ -20,6 +20,11 @@ import com.example.repository.ItemRepository;
 import com.example.repository.OptionGroupRepository;
 import com.example.repository.OptionRepository;
 
+/**
+ * データの初期化.
+ *
+ * @author char5742
+ */
 @Component
 public class DataInitializer implements CommandLineRunner {
 

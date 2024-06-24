@@ -16,6 +16,7 @@ import com.example.repository.OptionRepository;
 import com.example.service.ShoppingCartService;
 
 /**
+ * カートを操作するコントローラクラス.
  *
  * @author takeru.chugun
  * @author mun
@@ -51,10 +52,10 @@ public class ShoppingCartController {
     }
 
     /**
-     * Itemを追加する.
+     * カートにitemを追加する.
      *
-     * @param form addするフォーム
-     * @return 成功かエラーメッセージ
+     * @param form 追加するitemIdと選択されたoptionのListのフォーム
+     * @return 追加に成功かエラーのメッセージ
      */
     @PostMapping("/addItem")
     public ResponseEntity<?> test(@RequestBody AddItemDto form) {

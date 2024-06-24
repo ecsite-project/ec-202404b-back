@@ -27,6 +27,12 @@ public class ShowItemDetailService {
     @Autowired
     private OptionGroupRepository optionGroupRepository;
 
+    /**
+     * 商品の詳細とそのオプションをmapで返す.
+     *
+     * @param id 商品のid(itemId)
+     * @return 商品詳細とオプション
+     */
     public Map<String, ?> getDetail(UUID id) {
         val optionalItem = itemRepository.findById(id);
         val item = optionalItem.orElse(null);
