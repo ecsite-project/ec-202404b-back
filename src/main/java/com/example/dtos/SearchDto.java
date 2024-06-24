@@ -1,7 +1,6 @@
 package com.example.dtos;
 
 import java.util.List;
-import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +20,7 @@ public class SearchDto {
     /** 最小料金 */
     private String minPrice;
     /** 色 */
-    private List<UUID> colorList;
+    private List<String> colorList;
     /** 種 */
-    private String breedId = "";
+    private String breed = "";
 }
