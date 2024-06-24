@@ -1,6 +1,8 @@
 package com.example;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -435,11 +437,17 @@ public class DataInitializer implements CommandLineRunner {
                 .breed(breedRepository.findByName("Dachshund"))
                 .color(colorRepository.findByName("Black")).build());
 
+        // オプションを追加
+        val options = List.of(
+                optionRepository.findByName("エサA"),
+                optionRepository.findByName("おもちゃA")
+        );
+
         orderItemRepository.save(OrderItem.builder()
                 .item(item1)
                 .order(order1)
+                .options(options)
                 .build());
-
     }
 
     @Override

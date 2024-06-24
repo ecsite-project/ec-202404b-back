@@ -16,4 +16,5 @@ import com.example.domain.Option;
 @Repository
 public interface OptionRepository extends JpaRepository<Option, UUID> {
     List<Option> findByIdIn(List<UUID> uuidList);
+    Option findByName(String name);
 }
