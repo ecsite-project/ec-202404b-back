@@ -76,7 +76,7 @@ public class ShowItemListController {
 
             int currentPage = items.getNumber() + 1; // 0-based index to 1-based
             int perPage = items.getSize();
-            int lastPage = items.getTotalPages() + 1;
+            int lastPage = items.getTotalPages();
             int total = (int) items.getTotalElements();
 
             PageResponseDto.Metadata metadata = new PageResponseDto.Metadata(currentPage, perPage, lastPage, total);
