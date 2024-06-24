@@ -17,26 +17,30 @@ import com.example.domain.Item;
  */
 @Repository
 public interface ItemRepository extends JpaRepository<Item, UUID> {
-    /** 上限価格、下限価格、種別、色で検索 */
-    List<Item> findByPriceBetweenAndBreedIdAndColorIdIn(Double minPrice, Double maxPrice, UUID breed,
-            List<UUID> colorIds);
+        /** 上限価格、下限価格、種別、色で検索 */
+        List<Item> findByPriceBetweenAndBreedIdAndColorIdIn(Double minPrice, Double maxPrice, UUID breed,
+                        List<UUID> colorIds);
 
-    /** 上限価格、下限価格、色で検索 */
-    List<Item> findByPriceBetweenAndColorIdIn(Double minPrice, Double maxPrice, List<UUID> colorIds);
+        /** 上限価格、下限価格、色で検索 */
+        List<Item> findByPriceBetweenAndColorIdIn(Double minPrice, Double maxPrice, List<UUID> colorIds);
 
-    /** 上限価格、下限価格で検索 */
-    List<Item> findByPriceBetween(Double minPrice, Double maxPrice);
+        /** 上限価格、下限価格で検索 */
+        List<Item> findByPriceBetween(Double minPrice, Double maxPrice);
 
-    /*---------ページング用---------*/
-    /** 上限価格、下限価格、種別、色で検索 */
-    Page<Item> findByPriceBetweenAndBreedIdAndColorIdIn(Double minPrice, Double maxPrice, UUID breed,
-            List<UUID> colorIds, Pageable pageable);
+        /*---------ページング用---------*/
+        /** 上限価格、下限価格、種別、色で検索 */
+        Page<Item> findByPriceBetweenAndBreedIdAndColorIdIn(Double minPrice, Double maxPrice, UUID breed,
+                        List<UUID> colorIds, Pageable pageable);
 
-    /** 上限価格、下限価格、色で検索 */
-    Page<Item> findByPriceBetweenAndColorIdIn(Double minPrice, Double maxPrice, List<UUID> colorIds, Pageable pageable);
+        /** 上限価格、下限価格、色で検索 */
+        Page<Item> findByPriceBetweenAndColorIdIn(Double minPrice, Double maxPrice, List<UUID> colorIds,
+                        Pageable pageable);
 
-    /** 上限価格、下限価格で検索 */
-    Page<Item> findByPriceBetween(Double minPrice, Double maxPrice, Pageable pageable);
+        /** 上限価格、下限価格で検索 */
+        Page<Item> findByPriceBetween(Double minPrice, Double maxPrice, Pageable pageable);
 
-    Item findByDescription(String description);
+        /** 上限価格、下限価格、種別で検索 */
+        Page<Item> findByPriceBetweenAndBreedId(Double minPrice, Double maxPrice, UUID breed, Pageable pageable);
+
+        Item findByDescription(String description);
 }

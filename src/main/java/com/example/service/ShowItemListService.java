@@ -92,6 +92,14 @@ public class ShowItemListService {
                     pageable);
         }
 
+        if (colorIdList.isEmpty()) {
+            return itemRepository.findByPriceBetweenAndBreedId(
+                    Double.parseDouble(condition.getMinPrice()),
+                    Double.parseDouble(condition.getMaxPrice()),
+                    breedRepository.findByName(condition.getBreed()).getId(),
+                    pageable);
+        }
+
         /*
          * 条件: Min < 値段 < Max and 種別 and 色リスト
          */
