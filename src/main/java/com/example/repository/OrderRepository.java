@@ -6,9 +6,29 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.domain.Order;
 import com.example.domain.OrderStatus;
+import org.springframework.stereotype.Repository;
 
+/**
+ * カートを検索するリポジトリクラス.
+ *
+ * @author tugukurechan
+ */
+@Repository
 public interface OrderRepository extends JpaRepository<Order, UUID> {
+    /**
+     * statusとuserIdで検索する.
+     *
+     * @param status 注文のステータス
+     * @param id Userのid
+     * @return statusが注文前でかつuserIdが一致するOrder
+     */
     Order findByStatusAndUserId(OrderStatus status, UUID id);
 
+    /**
+     * userIdのOrderが存在するか.
+     *
+     * @param useId userId
+     * @return true or false
+     */
     Boolean existsByUserId(UUID useId);
 }

@@ -1,5 +1,10 @@
 package com.example.domain;
 
+/**
+ * 注文の配達時間を表すEnumクラス.
+ *
+ * @author tugukurechan
+ */
 public enum TimeRange {
     RANGE_8_10("8:00~10:00"),
     RANGE_10_12("10:00~12:00"),
