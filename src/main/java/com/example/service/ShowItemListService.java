@@ -75,7 +75,7 @@ public class ShowItemListService {
          * 条件: Min < 値段 < Max
          */
         if (hasNotBreed && colorIdList.isEmpty()) {
-            return itemRepository.findByPriceBetween(
+            return itemRepository.findByPriceBetweenOrderByPriceAsc(
                     Double.parseDouble(condition.getMinPrice()),
                     Double.parseDouble(condition.getMaxPrice()),
                     pageable);
@@ -85,7 +85,7 @@ public class ShowItemListService {
          * 条件: Min < 値段 < Max and 色リスト
          */
         if (hasNotBreed) {
-            return itemRepository.findByPriceBetweenAndColorIdIn(
+            return itemRepository.findByPriceBetweenAndColorIdInOrderByPriceAsc(
                     Double.parseDouble(condition.getMinPrice()),
                     Double.parseDouble(condition.getMaxPrice()),
                     colorIdList,
@@ -93,7 +93,7 @@ public class ShowItemListService {
         }
 
         if (colorIdList.isEmpty()) {
-            return itemRepository.findByPriceBetweenAndBreedId(
+            return itemRepository.findByPriceBetweenAndBreedIdOrderByPriceAsc(
                     Double.parseDouble(condition.getMinPrice()),
                     Double.parseDouble(condition.getMaxPrice()),
                     breedRepository.findByName(condition.getBreed()).getId(),
@@ -104,7 +104,7 @@ public class ShowItemListService {
          * 条件: Min < 値段 < Max and 種別 and 色リスト
          */
         val breed = breedRepository.findByName(condition.getBreed());
-        return itemRepository.findByPriceBetweenAndBreedIdAndColorIdIn(
+        return itemRepository.findByPriceBetweenAndBreedIdAndColorIdInOrderByPriceAsc(
                 Double.parseDouble(condition.getMinPrice()),
                 Double.parseDouble(condition.getMaxPrice()),
                 breed.getId(),
