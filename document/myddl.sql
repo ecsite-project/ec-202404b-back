@@ -18,6 +18,14 @@ CREATE TABLE users (
  , updated_at timestamp default CURRENT_TIMESTAMP
 );
 
+-- ユーザのお気に入りリスト(favorites)
+drop table if exists favorites cascade;
+CREATE TABLE favorites(
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID,
+  item_id UUID
+);
+
 -- 配達時間(delivery_time_ranges)
 drop table if exists delivery_time_ranges cascade;
 CREATE TABLE delivery_time_ranges(
