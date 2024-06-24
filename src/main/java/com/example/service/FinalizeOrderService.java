@@ -98,6 +98,6 @@ public class FinalizeOrderService {
                 return result.getStatus();
             }
         }
-        return null;
+        return "success";
     }
 }
