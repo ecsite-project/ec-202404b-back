@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.example.domain.Item;
 
 /**
- * 表示と検索のリポジトリクラス
+ * 商品表示と検索のリポジトリクラス
  *
  * @author takeru.chugun
  */
@@ -37,4 +37,6 @@ public interface ItemRepository extends JpaRepository<Item, UUID> {
 
     /** 上限価格、下限価格で検索 */
     Page<Item> findByPriceBetween(Double minPrice, Double maxPrice, Pageable pageable);
+
+    Item findByDescription(String description);
 }

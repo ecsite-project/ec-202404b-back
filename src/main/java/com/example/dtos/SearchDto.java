@@ -7,6 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 商品を検索するときのDTOクラス.
+ *
+ * @author tugukurechan
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

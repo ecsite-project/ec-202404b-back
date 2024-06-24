@@ -1,10 +1,6 @@
 
 package com.example.contoroller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,8 +18,6 @@ import com.example.dtos.PageResponseDto;
 import com.example.dtos.SearchDto;
 import com.example.service.ShowItemListService;
 
-import lombok.val;
-
 /**
  * 商品一覧表示をするコントローラクラス.
  *
@@ -35,6 +29,11 @@ public class ShowItemListController {
     @Autowired
     private ShowItemListService service;
 
+    /**
+     * 商品一覧を返すメソッド.
+     *
+     * @return 全商品を返すメソッド
+     */
     @GetMapping("")
     public ResponseEntity<?> getAllItem() {
         try {
@@ -44,17 +43,22 @@ public class ShowItemListController {
         }
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<?> search() {
+    /**
+     * 商品検索（検索：上限価格、下限価格、色、種別）をする.
+     *
+     * @return 検索結果のリスト
+     */
+    @PostMapping("/search")
+    public ResponseEntity<?> search(@RequestBody SearchDto form) {
         try {
-            val form = new SearchDto();
-
-            val colorList = new ArrayList<>(List.of(
-                    UUID.fromString("1177eb09-8443-4670-b903-362d3cd135f0"),
-                    UUID.fromString("146b2622-5838-49a0-8db2-599676e8b673")));
-            form.setColorList(colorList);
-            form.setMaxPrice("100000");
-            form.setMinPrice("60000");
+            // バックエンドのテスト用
+            // val form = new SearchDto();
+            // val colorList = new ArrayList<>(List.of(
+            // UUID.fromString("1177eb09-8443-4670-b903-362d3cd135f0"),
+            // UUID.fromString("146b2622-5838-49a0-8db2-599676e8b673")));
+            // form.setColorList(colorList);
+            // form.setMaxPrice("100000");
+            // form.setMinPrice("60000");
             // form.setBreedId("3854607f-019f-4591-9ab1-95ac496ba728");
             return ResponseEntity.ok(service.search(form));
         } catch (Exception e) {

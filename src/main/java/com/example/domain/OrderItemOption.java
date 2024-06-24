@@ -19,6 +19,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 注文された商品で選択されたオプションのドメインクラス.
+ *
+ * @author tugukurechan
+ */
 @Entity
 @Data
 @NoArgsConstructor
