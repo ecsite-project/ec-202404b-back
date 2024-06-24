@@ -66,6 +66,13 @@ public class ShowItemListService {
         }
     }
 
+    /**
+     * 検索をしてページで表示する.
+     *
+     * @param condition 検索フォーム
+     * @param pageable ページ
+     * @return 検索後の商品のリスト
+     */
     public Page<Item> search(SearchDto condition, Pageable pageable) {
         List<UUID> colorIdList = condition.getColorList().stream().map(colorRepository::findByName).map(e -> e.getId())
                 .toList();

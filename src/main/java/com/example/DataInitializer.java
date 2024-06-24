@@ -389,6 +389,9 @@ public class DataInitializer implements CommandLineRunner {
 
 
     private void setUpOrders() {
+        if (orderRepository.count() > 0) {
+            return;
+        }
         Order order1 = orderRepository.save(Order.builder()
                 .userId(userRepository.findByEmail("taro.yamada@example.com").getId())
                 .status(OrderStatus.BEFORE_ORDER)
