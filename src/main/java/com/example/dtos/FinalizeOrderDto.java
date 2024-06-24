@@ -1,11 +1,10 @@
 package com.example.dtos;
 
-import com.example.domain.Order;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 /**
  * 注文確定時に送られるもののDTOクラス.

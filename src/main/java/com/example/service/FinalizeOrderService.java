@@ -3,6 +3,7 @@ package com.example.service;
 
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
+import com.example.domain.OrderStatus;
 import com.example.domain.TimeRange;
 import com.example.dtos.FinalizeOrderDto;
 import com.example.dtos.PaymentInfoDTO;
@@ -41,12 +42,11 @@ public class FinalizeOrderService {
      * @throws JsonProcessingException exception
      */
     public String finalize(FinalizeOrderDto form, PaymentInfoDTO paymentInfo) throws JsonProcessingException {
-        Order order = orderRepository.findByStatusAndUserId(0, UUID.fromString(form.getUserId()));
+        Order order = orderRepository.findByStatusAndUserId(OrderStatus.BEFORE_ORDER, UUID.fromString(form.getUserId()));
         // 0(注文前)->1(未入金)
-        order.setStatus(1);
+        order.setStatus(OrderStatus.UNPAID);
 
         //total price
-        // <OrderItem>
         var orderItemList = order.getOrderItems();
         var totalPrice = 0;
         for (var orderItem : orderItemList) {
@@ -76,21 +76,20 @@ public class FinalizeOrderService {
         } catch (DateTimeParseException e) {
             e.printStackTrace();
         }
-        order.setDeliveryTime(TimeRange.fromDisplayName(form.getDeliveryTime()));
+        order.setTimeRange(TimeRange.fromDisplayName(form.getDeliveryTime()));
 
         order.setPaymentMethod(form.getPaymentMethod());
-        order.setUpdatedAt(LocalDateTime.now());
         orderRepository.save(order);
 
         // 支払い方法がクレカの場合
+        // 現金払いの場合はstatus=UNPAID(1)のまま
         if(form.getPaymentMethod().equals("クレカ")){
             paymentInfo.setOrderNumber(String.valueOf(order.getId()));
             paymentInfo.setAmount(order.getTotalPrice());
             val result = creditCardService.callApi(paymentInfo);
             if(result.getStatus().equals("success")){
-                // status = 2は入金済み
-                order.setStatus(2);
-                // 更新する
+                // status = PAID(2)は入金済み
+                order.setStatus(OrderStatus.PAID);
                 orderRepository.save(order);
             }else{
                 // クレカのエラーメッセージを出力
