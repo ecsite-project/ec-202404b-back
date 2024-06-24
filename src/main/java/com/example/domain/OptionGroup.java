@@ -54,5 +54,6 @@ public class OptionGroup {
     private Instant updatedAt;
 
     @OneToMany(mappedBy = "optionGroup", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private final List<Option> options = new ArrayList<>();
+    @Builder.Default
+    private List<Option> options = new ArrayList<>();
 }

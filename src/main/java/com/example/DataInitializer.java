@@ -362,6 +362,7 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+
     private void setUpOrders() {
         Order order1 = orderRepository.save(Order.builder()
                 .userId(userRepository.findByEmail("taro.yamada@example.com").getId())

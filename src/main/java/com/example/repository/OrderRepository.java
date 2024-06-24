@@ -3,10 +3,10 @@ package com.example.repository;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.example.domain.Order;
 import com.example.domain.OrderStatus;
-import org.springframework.stereotype.Repository;
 
 /**
  * カートを検索するリポジトリクラス.
