@@ -54,7 +54,6 @@ public class ShowItemListService {
     }
 
     public Page<Item> search(SearchDto condition, Pageable pageable) {
-
         /*
          * 条件: Min < 値段 < Max
          */
@@ -79,7 +78,7 @@ public class ShowItemListService {
         /*
          * 条件: Min < 値段 < Max and 種別 and 色リスト
          */
-        return itemRepository.findByPriceBetweenAndBreedIdAndColorIdInOrderBYCreatedAtDesc(
+        return itemRepository.findByPriceBetweenAndBreedIdAndColorIdInOrderByCreatedAtDesc(
                 Double.parseDouble(condition.getMinPrice()),
                 Double.parseDouble(condition.getMaxPrice()),
                 UUID.fromString(condition.getBreedId()),
