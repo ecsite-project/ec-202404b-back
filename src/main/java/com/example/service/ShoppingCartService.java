@@ -60,6 +60,7 @@ public class ShoppingCartService {
     public void addItem(AddItemDto form) {
         UUID userId = UUID.fromString(form.getUserId());
         Order order = orderRepository.findByStatusAndUserId(OrderStatus.BEFORE_ORDER, userId);
+
         //カート存在しない時
         if (order == null){
             order = orderRepository.save(Order.builder()
@@ -71,17 +72,15 @@ public class ShoppingCartService {
 
         var item = itemRepository.findById(UUID.fromString(form.getItemId())).orElse(null);
         if (item == null) return;
-        //重複追加：削除する
+
+        //重複追加：削除する　⇒　新たなデータを再追加
         for(OrderItem orderItem : order.getOrderItems()){
                 if (orderItem.getItem().getId().equals(item.getId())){
                     order.getOrderItems().remove(orderItem);
                     break;
                 }
         }
-//        List<UUID> listOrderItem = order.getOrderItems().stream().map(OrderItem::getItem).map(Item::getId).toList();
-//        if (item == null || listOrderItem.contains(item.getId())){
-//            return;
-//        }
+
         List<Option> options = new ArrayList<>();
         if(!form.getOptionIdList().isEmpty()) {
             options = form.getOptionIdList().stream()
@@ -98,12 +97,10 @@ public class ShoppingCartService {
 
         //Order
         order.setStatus(OrderStatus.BEFORE_ORDER);
-        order.setTotalPrice(10);
         order.setOrderDate(LocalDate.now());
         order.getOrderItems().add(orderItem);
         order.setOrderItems(order.getOrderItems());
 
-//        orderItem.setOrder(orderRepository.save(order));
         // Update
         orderItemRepository.save(orderItem);
     }
