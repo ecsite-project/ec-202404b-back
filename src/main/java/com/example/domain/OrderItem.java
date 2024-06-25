@@ -61,7 +61,7 @@ public class OrderItem {
 
     @ManyToMany
     @JoinTable(
-            name = "order_item_option",
+            name = "order_item_options",
             joinColumns = @JoinColumn(name = "order_item_id"),
             inverseJoinColumns = @JoinColumn(name = "option_id")
     )
