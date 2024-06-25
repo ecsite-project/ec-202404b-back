@@ -2,16 +2,15 @@
 package com.example.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.example.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.domain.Order;
-import com.example.domain.OrderItem;
-import com.example.domain.OrderStatus;
 import com.example.dtos.AddItemDto;
 import com.example.dtos.GetShoppingCartDto;
 import com.example.repository.ItemRepository;
@@ -59,24 +58,49 @@ public class ShoppingCartService {
      * @param form 追加する商品のidと選択されたオプションのリストが入ったフォーム
      */
     public void addItem(AddItemDto form) {
+        UUID userId = UUID.fromString(form.getUserId());
+        Order order = orderRepository.findByStatusAndUserId(OrderStatus.BEFORE_ORDER, userId);
+
+        //カート存在しない時
+        if (order == null){
+            order = orderRepository.save(Order.builder()
+                            .id(UUID.randomUUID())
+                            .userId(userId)
+                            .status(OrderStatus.BEFORE_ORDER)
+                            .build());
+        }
+
         var item = itemRepository.findById(UUID.fromString(form.getItemId())).orElse(null);
-        var options = form.getOptionIdList().stream()
-                .map(optionId -> optionRepository.findById(UUID.fromString(optionId))
-                        .orElseThrow(() -> new RuntimeException("Option not found: " + optionId)))
-                .collect(Collectors.toList());
+        if (item == null) return;
+
+        //重複追加：削除する　⇒　新たなデータを再追加
+        for(OrderItem orderItem : order.getOrderItems()){
+                if (orderItem.getItem().getId().equals(item.getId())){
+                    order.getOrderItems().remove(orderItem);
+                    break;
+                }
+        }
+
+        List<Option> options = new ArrayList<>();
+        if(!form.getOptionIdList().isEmpty()) {
+            options = form.getOptionIdList().stream()
+                    .map(optionId -> optionRepository.findById(UUID.fromString(optionId))
+                            .orElseThrow(() -> new RuntimeException("Option not found: " + optionId)))
+                    .collect(Collectors.toList());
+        }
 
         var orderItem = new OrderItem();
+        orderItem.setOrder(order);
         orderItem.setItem(item);
         orderItem.setOptions(options);
         orderItem = orderItemRepository.save(orderItem);
 
-        var order = new Order();
+        //Order
         order.setStatus(OrderStatus.BEFORE_ORDER);
-        order.setTotalPrice(10);
         order.setOrderDate(LocalDate.now());
-        order.setOrderItems(List.of(orderItem));
+        order.getOrderItems().add(orderItem);
+        order.setOrderItems(order.getOrderItems());
 
-        orderItem.setOrder(orderRepository.save(order));
         // Update
         orderItemRepository.save(orderItem);
     }
