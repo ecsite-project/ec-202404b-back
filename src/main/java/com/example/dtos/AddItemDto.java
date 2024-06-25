@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AddItemDto {
     /**ユーザID*/
-    private String UserId;
+    private String userId;
     /** 商品id(String) */
     private String itemId;
     /** 選択されたオプションのUUID(String) */
