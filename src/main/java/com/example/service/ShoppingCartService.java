@@ -2,10 +2,12 @@
 package com.example.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.example.domain.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,10 +73,15 @@ public class ShoppingCartService {
         }
 
         var item = itemRepository.findById(UUID.fromString(form.getItemId())).orElse(null);
-        var options = form.getOptionIdList().stream()
-                .map(optionId -> optionRepository.findById(UUID.fromString(optionId))
-                        .orElseThrow(() -> new RuntimeException("Option not found: " + optionId)))
-                .collect(Collectors.toList());
+
+        List<Option> options = new ArrayList<>();
+        if(!form.getOptionIdList().isEmpty()) {
+            options = form.getOptionIdList().stream()
+                    .map(optionId -> optionRepository.findById(UUID.fromString(optionId))
+                            .orElseThrow(() -> new RuntimeException("Option not found: " + optionId)))
+                    .collect(Collectors.toList());
+        }
+
 
         var orderItem = new OrderItem();
         orderItem.setOrder(order);
