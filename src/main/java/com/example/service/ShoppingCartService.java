@@ -93,7 +93,8 @@ public class ShoppingCartService {
         order.setStatus(OrderStatus.BEFORE_ORDER);
         order.setTotalPrice(10);
         order.setOrderDate(LocalDate.now());
-        order.setOrderItems(List.of(orderItem));
+        order.getOrderItems().add(orderItem);
+        order.setOrderItems(order.getOrderItems());
 
 //        orderItem.setOrder(orderRepository.save(order));
         // Update
