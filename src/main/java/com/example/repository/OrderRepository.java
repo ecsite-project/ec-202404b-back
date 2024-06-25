@@ -40,5 +40,5 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
      * @param useId userId
      * @return true or false
      */
-    Boolean existsByUserId(UUID useId);
+    Boolean existsByStatusAndUserId(OrderStatus status,UUID useId);
 }
