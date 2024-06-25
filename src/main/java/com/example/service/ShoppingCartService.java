@@ -7,13 +7,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.example.domain.Option;
+import com.example.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.domain.Order;
-import com.example.domain.OrderItem;
-import com.example.domain.OrderStatus;
 import com.example.dtos.AddItemDto;
 import com.example.dtos.GetShoppingCartDto;
 import com.example.repository.ItemRepository;
@@ -74,7 +71,7 @@ public class ShoppingCartService {
 
         var item = itemRepository.findById(UUID.fromString(form.getItemId())).orElse(null);
         //重複追加：無視する
-        List<UUID> listOrderItem = order.getOrderItems().stream().map(OrderItem::getId).toList();
+        List<UUID> listOrderItem = order.getOrderItems().stream().map(OrderItem::getItem).map(Item::getId).toList();
         if (item == null || listOrderItem.contains(item.getId())){
             return;
         }
