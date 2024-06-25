@@ -73,7 +73,11 @@ public class ShoppingCartService {
         }
 
         var item = itemRepository.findById(UUID.fromString(form.getItemId())).orElse(null);
-
+        //重複追加：無視する
+        List<UUID> listOrderItem = order.getOrderItems().stream().map(OrderItem::getId).toList();
+        if (item == null || listOrderItem.contains(item.getId())){
+            return;
+        }
         List<Option> options = new ArrayList<>();
         if(!form.getOptionIdList().isEmpty()) {
             options = form.getOptionIdList().stream()
