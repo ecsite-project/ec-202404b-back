@@ -112,7 +112,7 @@ public class ShoppingCartService {
      * @return true or false
      */
     public Boolean isUserId(UUID userId) {
-        return orderRepository.existsByUserId(userId);
+        return orderRepository.existsByStatusAndUserId(OrderStatus.BEFORE_ORDER, userId);
     }
 
     /**
