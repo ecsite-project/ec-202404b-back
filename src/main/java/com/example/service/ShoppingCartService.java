@@ -59,6 +59,17 @@ public class ShoppingCartService {
      * @param form 追加する商品のidと選択されたオプションのリストが入ったフォーム
      */
     public void addItem(AddItemDto form) {
+        UUID userId = UUID.fromString(form.getUserId());
+        Order order = orderRepository.findByStatusAndUserId(OrderStatus.BEFORE_ORDER, userId);
+        //カート存在しない時
+        if (order == null){
+            order = orderRepository.save(Order.builder()
+                            .id(UUID.randomUUID())
+                            .userId(userId)
+                            .status(OrderStatus.BEFORE_ORDER)
+                            .build());
+        }
+
         var item = itemRepository.findById(UUID.fromString(form.getItemId())).orElse(null);
         var options = form.getOptionIdList().stream()
                 .map(optionId -> optionRepository.findById(UUID.fromString(optionId))
@@ -66,17 +77,18 @@ public class ShoppingCartService {
                 .collect(Collectors.toList());
 
         var orderItem = new OrderItem();
+        orderItem.setOrder(order);
         orderItem.setItem(item);
         orderItem.setOptions(options);
         orderItem = orderItemRepository.save(orderItem);
 
-        var order = new Order();
+        //Order
         order.setStatus(OrderStatus.BEFORE_ORDER);
         order.setTotalPrice(10);
         order.setOrderDate(LocalDate.now());
         order.setOrderItems(List.of(orderItem));
 
-        orderItem.setOrder(orderRepository.save(order));
+//        orderItem.setOrder(orderRepository.save(order));
         // Update
         orderItemRepository.save(orderItem);
     }
