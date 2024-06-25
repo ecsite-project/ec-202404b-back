@@ -11,4 +11,6 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
     Order findByStatusAndUserId(OrderStatus status, UUID id);
 
     Boolean existsByUserId(UUID useId);
+
+    Order findByTotalPrice(Integer totalPrice);
 }
