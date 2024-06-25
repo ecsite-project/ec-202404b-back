@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.dtos.AddItemDto;
 import com.example.dtos.DeleteItemDto;
 import com.example.dtos.GetShoppingCartDto;
-import com.example.repository.OptionRepository;
 import com.example.service.ShoppingCartService;
 
 /**
+ * カートを操作するコントローラクラス.
  *
  * @author takeru.chugun
  * @author mun
@@ -25,9 +25,6 @@ import com.example.service.ShoppingCartService;
 public class ShoppingCartController {
     @Autowired
     private ShoppingCartService shoppingCartService;
-
-    @Autowired
-    private OptionRepository optionRepository;
 
     /**
      * ショッピングカートをid検索して表示する.
@@ -51,13 +48,13 @@ public class ShoppingCartController {
     }
 
     /**
-     * Itemを追加する.
+     * カートにitemを追加する.
      *
-     * @param form addするフォーム
-     * @return 成功かエラーメッセージ
+     * @param form 追加するitemIdと選択されたoptionのListのフォーム
+     * @return 追加に成功かエラーのメッセージ
      */
     @PostMapping("/addItem")
-    public ResponseEntity<?> test(@RequestBody AddItemDto form) {
+    public ResponseEntity<?> addItem(@RequestBody AddItemDto form) {
         try {
             shoppingCartService.addItem(form);
             return ResponseEntity.ok("success adding item");

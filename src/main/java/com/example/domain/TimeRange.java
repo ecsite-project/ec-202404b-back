@@ -1,5 +1,10 @@
 package com.example.domain;
 
+/**
+ * 注文の配達時間を表すEnumクラス.
+ *
+ * @author tugukurechan
+ */
 public enum TimeRange {
     RANGE_8_10("8:00~10:00"),
     RANGE_10_12("10:00~12:00"),
@@ -11,6 +16,15 @@ public enum TimeRange {
 
     TimeRange(String displayName) {
         this.displayName = displayName;
+    }
+
+    public static TimeRange fromDisplayName(String displayName){
+        for(TimeRange range : TimeRange.values()){
+            if(range.displayName.equals(displayName)){
+                return range;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with display name "+displayName);
     }
 
     public String getDisplayName() {

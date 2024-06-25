@@ -32,6 +32,8 @@ public class CreditCardService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         // リクエストボディの設定
+        paymentInfoDTO.setUserId("123");
+        paymentInfoDTO.setOrderNumber("123");
         String requestBody = objectMapper.writeValueAsString(paymentInfoDTO);
         System.out.println(requestBody);
         // HTTPエンティティの作成

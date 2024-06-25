@@ -1,6 +1,8 @@
 package com.example;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,6 +14,10 @@ import com.example.domain.Color;
 import com.example.domain.Item;
 import com.example.domain.Option;
 import com.example.domain.OptionGroup;
+import com.example.domain.Order;
+import com.example.domain.OrderItem;
+import com.example.domain.OrderStatus;
+import com.example.domain.TimeRange;
 import com.example.domain.User;
 import com.example.repositories.UserRepository;
 import com.example.repository.BreedRepository;
@@ -19,7 +25,16 @@ import com.example.repository.ColorRepository;
 import com.example.repository.ItemRepository;
 import com.example.repository.OptionGroupRepository;
 import com.example.repository.OptionRepository;
+import com.example.repository.OrderItemRepository;
+import com.example.repository.OrderRepository;
 
+import lombok.val;
+
+/**
+ * データの初期化.
+ *
+ * @author char5742
+ */
 @Component
 public class DataInitializer implements CommandLineRunner {
 
@@ -30,6 +45,9 @@ public class DataInitializer implements CommandLineRunner {
     private UserRepository userRepository;
 
     private void setUpUsers() {
+        if (userRepository.count() > 0) {
+            return;
+        }
         userRepository.save(User.builder().firstName("Taro")
                 .lastName("Yamada")
                 .email("taro.yamada@example.com")
@@ -50,13 +68,15 @@ public class DataInitializer implements CommandLineRunner {
                 .municipalities("Naniwa")
                 .address("Naniwa 2-2-2")
                 .telephone("080-8765-4321").build());
-
     }
 
     @Autowired
     private BreedRepository breedRepository;
 
     private void setUpBreed() {
+        if (breedRepository.count() > 0) {
+            return;
+        }
         breedRepository.save(Breed.builder().name("Shiba Inu").build());
         breedRepository.save(Breed.builder().name("Labrador Retriever").build());
         breedRepository.save(Breed.builder().name("German Shepherd").build());
@@ -72,6 +92,9 @@ public class DataInitializer implements CommandLineRunner {
     private ColorRepository colorRepository;
 
     private void setUpColor() {
+        if (colorRepository.count() > 0) {
+            return;
+        }
         colorRepository.save(Color.builder().name("Black").build());
         colorRepository.save(Color.builder().name("White").build());
         colorRepository.save(Color.builder().name("Brown").build());
@@ -87,18 +110,21 @@ public class DataInitializer implements CommandLineRunner {
     private ItemRepository itemRepository;
 
     private void setUpItem() {
+        if (itemRepository.count() > 0) {
+            return;
+        }
         itemRepository.save(Item.builder()
                 .description("Friendly Shiba Inu")
                 .price(300000)
-                .image("cat3.jpg")
+                .image("shiba_inu.png")
                 .gender("male")
-                .birthDay(LocalDate.of(2020, 1, 1))
+                .birthDay(LocalDate.of(2023, 1, 1))
                 .breed(breedRepository.findByName("Shiba Inu"))
                 .color(colorRepository.findByName("Black")).build());
         itemRepository.save(Item.builder()
                 .description("Loyal Labrador")
                 .price(250000)
-                .image("cat3.jpg")
+                .image("labrador.png")
                 .gender("female")
                 .birthDay(LocalDate.of(2023, 2, 1))
                 .breed(breedRepository.findByName("Labrador Retriever"))
@@ -107,7 +133,7 @@ public class DataInitializer implements CommandLineRunner {
         itemRepository.save(Item.builder()
                 .description("Brave German Shepherd")
                 .price(280000)
-                .image("cat3.jpg")
+                .image("german_shepherd.png")
                 .gender("male")
                 .birthDay(LocalDate.of(2023, 3, 1))
                 .breed(breedRepository.findByName("German Shepherd"))
@@ -116,7 +142,7 @@ public class DataInitializer implements CommandLineRunner {
         itemRepository.save(Item.builder()
                 .description("Gentle Golden Retriever")
                 .price(270000)
-                .image("cat3.jpg")
+                .image("golden_retriever.png")
                 .gender("female")
                 .birthDay(LocalDate.of(2023, 4, 1))
                 .breed(breedRepository.findByName("Golden Retriever"))
@@ -125,7 +151,7 @@ public class DataInitializer implements CommandLineRunner {
         itemRepository.save(Item.builder()
                 .description("Playful Bulldog")
                 .price(260000)
-                .image("cat3.jpg")
+                .image("bulldog.png")
                 .gender("male")
                 .birthDay(LocalDate.of(2023, 5, 1))
                 .breed(breedRepository.findByName("Bulldog"))
@@ -134,7 +160,7 @@ public class DataInitializer implements CommandLineRunner {
         itemRepository.save(Item.builder()
                 .description("Smart Poodle")
                 .price(240000)
-                .image("cat3.jpg")
+                .image("poodle.png")
                 .gender("female")
                 .birthDay(LocalDate.of(2023, 6, 1))
                 .breed(breedRepository.findByName("Poodle"))
@@ -143,7 +169,7 @@ public class DataInitializer implements CommandLineRunner {
         itemRepository.save(Item.builder()
                 .description("Energetic Beagle")
                 .price(230000)
-                .image("cat3.jpg")
+                .image("beagle.png")
                 .gender("male")
                 .birthDay(LocalDate.of(2023, 7, 1))
                 .breed(breedRepository.findByName("Beagle"))
@@ -152,7 +178,7 @@ public class DataInitializer implements CommandLineRunner {
         itemRepository.save(Item.builder()
                 .description("Tiny Chihuahua")
                 .price(220000)
-                .image("cat3.jpg")
+                .image("chihuahua.png")
                 .gender("female")
                 .birthDay(LocalDate.of(2023, 8, 1))
                 .breed(breedRepository.findByName("Chihuahua"))
@@ -161,44 +187,46 @@ public class DataInitializer implements CommandLineRunner {
         itemRepository.save(Item.builder()
                 .description("Long Dachshund")
                 .price(210000)
-                .image("cat3.jpg")
+                .image("dachshund.png")
                 .gender("male")
                 .birthDay(LocalDate.of(2023, 9, 1))
                 .breed(breedRepository.findByName("Dachshund"))
                 .color(colorRepository.findByName("Black")).build());
-
     }
 
     @Autowired
     private OptionGroupRepository optionGroupRepository;
 
     private void setUpOptionGroup() {
+        if (optionGroupRepository.count() > 0) {
+            return;
+        }
         optionGroupRepository.save(OptionGroup.builder()
-                .name("エサ")
+                .name("food")
                 .inputType("radio")
                 .build());
         optionGroupRepository.save(OptionGroup.builder()
-                .name("おもちゃ")
+                .name("toy")
                 .inputType("checkbox")
                 .build());
         optionGroupRepository.save(OptionGroup.builder()
-                .name("トイレ")
+                .name("toilet")
                 .inputType("radio")
                 .build());
         optionGroupRepository.save(OptionGroup.builder()
-                .name("ケージ")
+                .name("cage")
                 .inputType("radio")
                 .build());
         optionGroupRepository.save(OptionGroup.builder()
-                .name("首輪")
+                .name("collar")
                 .inputType("radio")
                 .build());
         optionGroupRepository.save(OptionGroup.builder()
-                .name("ベッド")
+                .name("bed")
                 .inputType("radio")
                 .build());
         optionGroupRepository.save(OptionGroup.builder()
-                .name("お手入れ用品")
+                .name("care")
                 .inputType("checkbox")
                 .build());
     }
@@ -207,123 +235,193 @@ public class DataInitializer implements CommandLineRunner {
     private OptionRepository optionRepository;
 
     private void setUpOptions() {
+        if (optionRepository.count() > 0) {
+            return;
+        }
         // エサオプション
         optionRepository.save(Option.builder()
                 .name("エサA")
                 .price(500)
-                .optionGroup(optionGroupRepository.findByName("エサ"))
+                .optionGroup(optionGroupRepository.findByName("food"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("エサB")
                 .price(600)
-                .optionGroup(optionGroupRepository.findByName("エサ"))
+                .optionGroup(optionGroupRepository.findByName("food"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("エサC")
                 .price(700)
-                .optionGroup(optionGroupRepository.findByName("エサ"))
+                .optionGroup(optionGroupRepository.findByName("food"))
                 .build());
 
         // おもちゃオプション
         optionRepository.save(Option.builder()
                 .name("おもちゃA")
                 .price(1500)
-                .optionGroup(optionGroupRepository.findByName("おもちゃ"))
+                .optionGroup(optionGroupRepository.findByName("toy"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("おもちゃB")
                 .price(2000)
-                .optionGroup(optionGroupRepository.findByName("おもちゃ"))
+                .optionGroup(optionGroupRepository.findByName("toy"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("おもちゃC")
                 .price(2500)
-                .optionGroup(optionGroupRepository.findByName("おもちゃ"))
+                .optionGroup(optionGroupRepository.findByName("toy"))
                 .build());
 
         // トイレオプション
         optionRepository.save(Option.builder()
                 .name("トイレA")
                 .price(2500)
-                .optionGroup(optionGroupRepository.findByName("トイレ"))
+                .optionGroup(optionGroupRepository.findByName("toilet"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("トイレB")
                 .price(3000)
-                .optionGroup(optionGroupRepository.findByName("トイレ"))
+                .optionGroup(optionGroupRepository.findByName("toilet"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("トイレC")
                 .price(3500)
-                .optionGroup(optionGroupRepository.findByName("トイレ"))
+                .optionGroup(optionGroupRepository.findByName("toilet"))
                 .build());
 
         // ケージオプション
         optionRepository.save(Option.builder()
                 .name("ケージA")
                 .price(8000)
-                .optionGroup(optionGroupRepository.findByName("ケージ"))
+                .optionGroup(optionGroupRepository.findByName("cage"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("ケージB")
                 .price(10000)
-                .optionGroup(optionGroupRepository.findByName("ケージ"))
+                .optionGroup(optionGroupRepository.findByName("cage"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("ケージC")
                 .price(12000)
-                .optionGroup(optionGroupRepository.findByName("ケージ"))
+                .optionGroup(optionGroupRepository.findByName("cage"))
                 .build());
 
         // 首輪オプション
         optionRepository.save(Option.builder()
                 .name("首輪A")
                 .price(1000)
-                .optionGroup(optionGroupRepository.findByName("首輪"))
+                .optionGroup(optionGroupRepository.findByName("collar"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("首輪B")
                 .price(1500)
-                .optionGroup(optionGroupRepository.findByName("首輪"))
+                .optionGroup(optionGroupRepository.findByName("collar"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("首輪C")
                 .price(1400)
-                .optionGroup(optionGroupRepository.findByName("首輪"))
+                .optionGroup(optionGroupRepository.findByName("collar"))
                 .build());
 
         // ベッドオプション
         optionRepository.save(Option.builder()
                 .name("ベッドA")
                 .price(3000)
-                .optionGroup(optionGroupRepository.findByName("ベッド"))
+                .optionGroup(optionGroupRepository.findByName("bed"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("ベッドB")
                 .price(3500)
-                .optionGroup(optionGroupRepository.findByName("ベッド"))
+                .optionGroup(optionGroupRepository.findByName("bed"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("ベッドC")
                 .price(4000)
-                .optionGroup(optionGroupRepository.findByName("ベッド"))
+                .optionGroup(optionGroupRepository.findByName("bed"))
                 .build());
 
         // お手入れ用品オプション
         optionRepository.save(Option.builder()
                 .name("ブラシ")
                 .price(500)
-                .optionGroup(optionGroupRepository.findByName("お手入れ用品"))
+                .optionGroup(optionGroupRepository.findByName("care"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("シャンプー")
                 .price(800)
-                .optionGroup(optionGroupRepository.findByName("お手入れ用品"))
+                .optionGroup(optionGroupRepository.findByName("care"))
                 .build());
         optionRepository.save(Option.builder()
                 .name("爪切り")
                 .price(600)
-                .optionGroup(optionGroupRepository.findByName("お手入れ用品"))
+                .optionGroup(optionGroupRepository.findByName("care"))
+                .build());
+    }
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
+
+    private void setUpOrders() {
+        if (orderRepository.count() > 0) {
+            return;
+        }
+        Order order1 = orderRepository.save(Order.builder()
+                .userId(userRepository.findByEmail("taro.yamada@example.com").getId())
+                .status(OrderStatus.BEFORE_ORDER)
+                .totalPrice(320000)
+                .orderDate(LocalDate.parse("2024-06-20"))
+                .destinationName("Taro Yamada")
+                .destinationEmail("taro.yamada@example.com")
+                .destinationZipcode("123-4567")
+                .destinationPrefecture("Tokyo")
+                .destinationMunicipalities("Shibuya")
+                .destinationAddress("Shibuya 1-1-1")
+                .destinationTel("090-1234-5678")
+                .deliveryDate(LocalDate.of(2024, 6, 27))
+                .timeRange(TimeRange.RANGE_8_10)
+                .paymentMethod("Credit Card")
+                .build());
+
+        Order order2 = orderRepository.save(Order.builder()
+                .userId(userRepository.findByEmail("hanako.suzuki@example.com").getId())
+                .status(OrderStatus.BEFORE_ORDER)
+                .totalPrice(270000)
+                .orderDate(LocalDate.parse("2024-06-20"))
+                .destinationName("Hanako Suzuki")
+                .destinationEmail("hanako.suzuki@example.com")
+                .destinationZipcode("765-4321")
+                .destinationPrefecture("Osaka")
+                .destinationMunicipalities("Naniwa")
+                .destinationAddress("Naniwa 2-2-2")
+                .destinationTel("080-8765-4321")
+                .deliveryDate(LocalDate.of(2024, 6, 27))
+                .timeRange(TimeRange.RANGE_10_12)
+                .paymentMethod("Credit Card")
+                .build());
+
+        val item1 = itemRepository.save(Item.builder()
+                .description("Item1")
+                .price(210000)
+                .image("dachshund.png")
+                .gender("male")
+                .birthDay(LocalDate.of(2023, 9, 1))
+                .breed(breedRepository.findByName("Dachshund"))
+                .color(colorRepository.findByName("Black")).build());
+
+        // オプションを追加
+        val options = List.of(
+                optionRepository.findByName("エサA"),
+                optionRepository.findByName("おもちゃA")
+        );
+
+        orderItemRepository.save(OrderItem.builder()
+                .item(item1)
+                .order(order1)
+                .options(options)
                 .build());
     }
 
@@ -335,5 +433,6 @@ public class DataInitializer implements CommandLineRunner {
         setUpItem();
         setUpOptionGroup();
         setUpOptions();
+        setUpOrders();
     }
 }

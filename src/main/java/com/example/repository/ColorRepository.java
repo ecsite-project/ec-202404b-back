@@ -7,6 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import com.example.domain.Color;
 
+/**
+ * 色を操作するリポジトリクラス.
+ *
+ * @author tugukurechan
+ */
 @Repository
 public interface ColorRepository extends JpaRepository<Color, UUID> {
     public Color findByName(String name);
