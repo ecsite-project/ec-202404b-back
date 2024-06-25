@@ -71,19 +71,11 @@ public class ShoppingCartService {
 
         var item = itemRepository.findById(UUID.fromString(form.getItemId())).orElse(null);
         if (item == null) return;
-        //重複追加：無視する
+        //重複追加：削除する
         for(OrderItem orderItem : order.getOrderItems()){
                 if (orderItem.getItem().getId().equals(item.getId())){
-                    List<Option> options = new ArrayList<>();
-                    if(!form.getOptionIdList().isEmpty()) {
-                        options = form.getOptionIdList().stream()
-                                .map(optionId -> optionRepository.findById(UUID.fromString(optionId))
-                                        .orElseThrow(() -> new RuntimeException("Option not found: " + optionId)))
-                                .collect(Collectors.toList());
-                    }
-                    orderItem.setOptions(options);
-                    orderItemRepository.save(orderItem);
-                    return;
+                    order.getOrderItems().remove(orderItem);
+                    break;
                 }
         }
 //        List<UUID> listOrderItem = order.getOrderItems().stream().map(OrderItem::getItem).map(Item::getId).toList();
@@ -97,7 +89,6 @@ public class ShoppingCartService {
                             .orElseThrow(() -> new RuntimeException("Option not found: " + optionId)))
                     .collect(Collectors.toList());
         }
-
 
         var orderItem = new OrderItem();
         orderItem.setOrder(order);
