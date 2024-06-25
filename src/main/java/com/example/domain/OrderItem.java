@@ -60,10 +60,5 @@ public class OrderItem {
     private Instant updatedAt;
 
     @ManyToMany
-    @JoinTable(
-            name = "order_item_options",
-            joinColumns = @JoinColumn(name = "order_item_id"),
-            inverseJoinColumns = @JoinColumn(name = "option_id")
-    )
     private List<Option> options;
 }
