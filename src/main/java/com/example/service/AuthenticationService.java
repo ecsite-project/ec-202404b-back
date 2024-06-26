@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.domain.User;
 import com.example.dtos.LoginDto;
 import com.example.repositories.UserRepository;
 import com.example.security.JsonWebTokenUtil;
@@ -26,14 +27,19 @@ public class AuthenticationService {
     @Autowired
     private JsonWebTokenUtil jwtUtil;
 
-    public String login(LoginDto loginDto) {
+    public UserWithToken login(LoginDto loginDto) {
         val user = userRepository.findByEmail(loginDto.getEmail());
         if (user == null) {
             return null;
         }
         if (passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
-            return jwtUtil.generateToken(user.getId().toString(), user.getLastName() + " " + user.getFirstName());
+            val token = jwtUtil.generateToken(user.getId().toString(), user.getLastName() + " " + user.getFirstName());
+            return new UserWithToken(
+                    user, token);
         }
         return null;
     }
+
+    public record UserWithToken(User user, String token) {
+    };
 }
