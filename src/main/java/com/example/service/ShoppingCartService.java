@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.domain.Item;
 import com.example.domain.Option;
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
@@ -145,31 +146,32 @@ public class ShoppingCartService {
     }
 
     public void migration(UUID srcUserId, UUID destUserId) {
-        val srcOrder = orderRepository.findByStatusAndUserId(OrderStatus.BEFORE_ORDER, destUserId);
+        val srcOrder = orderRepository.findByStatusAndUserId(OrderStatus.BEFORE_ORDER, srcUserId);
         if (srcOrder == null) {
             // もし移行元が存在しなければ何もしない
             return;
         }
 
-        var destOrder = orderRepository.findByStatusAndUserId(OrderStatus.BEFORE_ORDER, srcUserId);
+        var destOrder = orderRepository.findByStatusAndUserId(OrderStatus.BEFORE_ORDER, destUserId);
         if (destOrder == null) {
             // 移行先がなければ生成
             destOrder = createNewOrder(destUserId);
         }
 
-        val prevDestOrderItems = destOrder.getOrderItems().stream().map(OrderItem::getId).collect(Collectors.toSet());
+        val prevDestOrderItems = destOrder.getOrderItems().stream().map(OrderItem::getItem).map(Item::getId).collect(Collectors.toSet());
         for (val orderItem : srcOrder.getOrderItems()) {
-            if (prevDestOrderItems.contains(orderItem.getId())) {
+            if (prevDestOrderItems.contains(orderItem.getItem().getId())) {
                 // 既に存在する場合は削除し、新しいものを追加する
                 destOrder.getOrderItems().remove(destOrder.getOrderItems().stream().filter(
-                        e -> e.getId().equals(orderItem.getId())).findFirst().get());
+                        e -> e.getItem().getId().equals(orderItem.getItem().getId())).findFirst().get());
             }
-            destOrder.getOrderItems().add(orderItem);
-            srcOrder.getOrderItems().remove(orderItem);
+            orderItemRepository.save(
+                    OrderItem.builder()
+                        .order(destOrder)
+                            .item(orderItem.getItem())
+                            .options(new ArrayList<>(orderItem.getOptions()))
+                            .build());
         }
-        
-        // 削除後状態更新
-        orderRepository.save(srcOrder);
         // 移行元は削除
         orderRepository.delete(srcOrder);
 
