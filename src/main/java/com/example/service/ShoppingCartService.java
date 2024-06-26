@@ -128,6 +128,7 @@ public class ShoppingCartService {
         order.setStatus(OrderStatus.BEFORE_ORDER);
         order.setTotalPrice(0);
         order.setOrderDate(LocalDate.now());
+        order.setOrderItems(new ArrayList<OrderItem>());
 
         // 新規作成
         orderRepository.save(order);
