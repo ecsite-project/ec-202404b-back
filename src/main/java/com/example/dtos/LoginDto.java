@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 public class LoginDto {
     private String email;
     private String password;
-    private String anonymus;
+    private String anonymous;
 }

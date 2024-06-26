@@ -39,10 +39,10 @@ public class AuthenticationController {
         if (token == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
-        if (loginDto.getAnonymus() != null) {
+        if (loginDto.getAnonymous() != null) {
 
             shoppingCartService.migration(
-                    UUID.fromString(loginDto.getAnonymus()), user.getId());
+                    UUID.fromString(loginDto.getAnonymous()), user.getId());
         }
         return ResponseEntity.ok(token);
 
