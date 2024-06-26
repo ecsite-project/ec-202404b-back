@@ -1,30 +1,35 @@
 package com.example.service;
 
-import com.example.domain.*;
-import com.example.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
+
+import com.example.domain.Item;
+import com.example.domain.Option;
+import com.example.domain.Order;
+import com.example.domain.OrderItem;
+import com.example.domain.User;
 
 import jakarta.mail.internet.MimeMessage;
+import lombok.val;
 
-@Service
+
 public class MailService {
 
     private static final Logger log = LoggerFactory.getLogger(MailService.class);
 
-    private final JavaMailSender javaMailSender;
-
-    @Autowired
-    public MailService(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
-    }
 
     public void sendHtmlMessage(Order order, User user) {
         try {
+            val javaMailSender = new JavaMailSenderImpl();
+            javaMailSender.setHost("smtp.gmail.com");
+            javaMailSender.setPort(587);
+            javaMailSender.setUsername("quymao08101999@gmail.com");
+            javaMailSender.setPassword("tfpyllxjmdxynlhp");
+            javaMailSender.getJavaMailProperties().setProperty("mail.smtp.auth", "true");
+            javaMailSender.getJavaMailProperties().setProperty("mail.smtp.starttls.enable", "true");
+            
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 

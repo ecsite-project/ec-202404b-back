@@ -31,8 +31,6 @@ public class FinalizeOrderController {
     @Autowired
     private FinalizeOrderService finalizeOrderService;
     @Autowired
-    private MailService mailService;
-    @Autowired
     private UserRepository userRepository;
     @Autowired
     private AsyncMail asyncMail;
