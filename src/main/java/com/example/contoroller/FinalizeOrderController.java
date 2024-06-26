@@ -14,6 +14,7 @@ import com.example.dtos.FinalizeOrderDto;
 import com.example.dtos.PaymentInfoDTO;
 import com.example.repositories.UserRepository;
 import com.example.security.JWTAuthenticationToken.AuthenticationUser;
+import com.example.service.AsyncMail;
 import com.example.service.FinalizeOrderService;
 import com.example.service.MailService;
 
@@ -33,6 +34,8 @@ public class FinalizeOrderController {
     private MailService mailService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private AsyncMail asyncMail;
 
     public record RequestInfo(FinalizeOrderDto form, PaymentInfoDTO paymentInfo) {
     }
@@ -47,7 +50,7 @@ public class FinalizeOrderController {
             PaymentInfoDTO paymentInfo = requestInfo.paymentInfo();
             val order = finalizeOrderService.finalize(form, paymentInfo);
             if (order != null) {
-                mailService.sendHtmlMessage(order,userRepository.findById(order.getUserId()).orElse(null));
+                asyncMail.sendAsyncMail(order,userRepository.findById(order.getUserId()).orElse(null));
                 return ResponseEntity.ok("success");
             }
             return ResponseEntity.badRequest().body("error");
