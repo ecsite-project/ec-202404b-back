@@ -150,11 +150,13 @@ public class ShoppingCartService {
             // もし移行元が存在しなければ何もしない
             return;
         }
+
         var destOrder = orderRepository.findByStatusAndUserId(OrderStatus.BEFORE_ORDER, srcUserId);
         if (destOrder == null) {
             // 移行先がなければ生成
             destOrder = createNewOrder(destUserId);
         }
+
         val prevDestOrderItems = destOrder.getOrderItems().stream().map(OrderItem::getId).collect(Collectors.toSet());
         for (val orderItem : srcOrder.getOrderItems()) {
             if (prevDestOrderItems.contains(orderItem.getId())) {
@@ -163,7 +165,11 @@ public class ShoppingCartService {
                         e -> e.getId().equals(orderItem.getId())).findFirst().get());
             }
             destOrder.getOrderItems().add(orderItem);
+            srcOrder.getOrderItems().remove(orderItem);
         }
+        
+        // 削除後状態更新
+        orderRepository.save(srcOrder);
         // 移行元は削除
         orderRepository.delete(srcOrder);
 
