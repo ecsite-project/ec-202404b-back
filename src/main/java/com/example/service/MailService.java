@@ -23,10 +23,7 @@ public class MailService {
         this.javaMailSender = javaMailSender;
     }
 
-    @Autowired
-    UserRepository userRepository;
-
-    public void sendHtmlMessage(Order order) {
+    public void sendHtmlMessage(Order order, User user) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -35,7 +32,7 @@ public class MailService {
             helper.setSubject("ご注文ありがとうございます！");
 
             // HTMLメールの内容を構築
-            String content = buildHtmlContent(order);
+            String content = buildHtmlContent(order, user);
             helper.setText(content, true);
 
             javaMailSender.send(message);
@@ -46,8 +43,7 @@ public class MailService {
         }
     }
 
-    private String buildHtmlContent(Order order) {
-        User user = userRepository.findById(order.getUserId()).orElse(null);
+    private String buildHtmlContent(Order order, User user) {
         StringBuilder html = new StringBuilder();
         html.append("<!DOCTYPE html>\n")
                 .append("<html lang=\"ja\">\n")

@@ -36,7 +36,7 @@ public class MailController {
     public String sendEmail() {
         Order newOrder = orderRepository.findByTotalPrice(320000);
         newOrder.setDestinationEmail("nitendoaccjp@gmail.com");
-        mailService.sendHtmlMessage(newOrder);
+        // mailService.sendHtmlMessage(newOrder);
         return "メールが送信されました。";
     }
 }
