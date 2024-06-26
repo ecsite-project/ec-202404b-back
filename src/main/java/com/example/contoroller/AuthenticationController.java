@@ -1,5 +1,7 @@
 package com.example.contoroller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dtos.LoginDto;
 import com.example.service.AuthenticationService;
+import com.example.service.ShoppingCartService;
 
 import lombok.val;
 
@@ -24,14 +27,24 @@ public class AuthenticationController {
     @Autowired
     AuthenticationService authenticationService;
 
+    @Autowired
+    ShoppingCartService shoppingCartService;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
 
-        val token = authenticationService.login(loginDto);
-        if (token != null) {
-            return ResponseEntity.ok(token);
+        val response = authenticationService.login(loginDto);
+        val token = response.token();
+        val user = response.user();
+        if (token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
+        if (loginDto.getAnonymus() != null) {
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            shoppingCartService.migration(
+                    UUID.fromString(loginDto.getAnonymus()), user.getId());
+        }
+        return ResponseEntity.ok(token);
+
     }
 }
