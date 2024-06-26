@@ -7,10 +7,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.example.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.domain.Option;
+import com.example.domain.Order;
+import com.example.domain.OrderItem;
+import com.example.domain.OrderStatus;
 import com.example.dtos.AddItemDto;
 import com.example.dtos.GetShoppingCartDto;
 import com.example.repository.ItemRepository;
@@ -71,7 +74,8 @@ public class ShoppingCartService {
         }
 
         var item = itemRepository.findById(UUID.fromString(form.getItemId())).orElse(null);
-        if (item == null) return;
+        // itemが存在しない、購入済みの場合は何も返さない
+        if (item == null || item.isDeleted()) return;
 
         //重複追加：削除する　⇒　新たなデータを再追加
         for(OrderItem orderItem : order.getOrderItems()){

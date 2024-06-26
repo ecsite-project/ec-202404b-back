@@ -14,6 +14,7 @@ import com.example.domain.OrderStatus;
 import com.example.domain.TimeRange;
 import com.example.dtos.FinalizeOrderDto;
 import com.example.dtos.PaymentInfoDTO;
+import com.example.repository.ItemRepository;
 import com.example.repository.OrderRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -31,6 +32,9 @@ public class FinalizeOrderService {
 
     @Autowired
     private CreditCardService creditCardService;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     /**
      * 注文商品のリストとクレカのフォーム（クレカ払いのとき）を受け取り
@@ -91,13 +95,28 @@ public class FinalizeOrderService {
                 // status = PAID(2)は入金済み
                 order.setStatus(OrderStatus.PAID);
                 orderRepository.save(order);
+
+                //購入できたら、売り切れに更新する.
+                for(var orderItem:order.getOrderItems()){
+                    var item = itemRepository.findById(orderItem.getItem().getId()).get();
+                    item.setDeleted(true);
+                    itemRepository.save(item);
+                }
+
                 return result.getStatus();
             }else{
                 // クレカのエラーメッセージを出力
-                //
                 return result.getStatus();
             }
         }
+        //-- 現金払いの場合 --//
+        // 売り切れに更新する.
+        for(var orderItem:order.getOrderItems()){
+            var item = itemRepository.findById(orderItem.getItem().getId()).get();
+            item.setDeleted(true);
+            itemRepository.save(item);
+        }
+        // 常に成功を返す.
         return "success";
     }
 }
