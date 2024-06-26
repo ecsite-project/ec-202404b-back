@@ -1,13 +1,18 @@
 package com.example.service;
 
-import com.example.domain.*;
-import com.example.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import com.example.domain.Item;
+import com.example.domain.Option;
+import com.example.domain.Order;
+import com.example.domain.OrderItem;
+import com.example.domain.User;
+import com.example.repositories.UserRepository;
 
 import jakarta.mail.internet.MimeMessage;
 
