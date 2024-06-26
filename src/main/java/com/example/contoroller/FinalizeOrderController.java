@@ -14,6 +14,9 @@ import com.example.dtos.FinalizeOrderDto;
 import com.example.dtos.PaymentInfoDTO;
 import com.example.security.JWTAuthenticationToken.AuthenticationUser;
 import com.example.service.FinalizeOrderService;
+import com.example.service.MailService;
+
+import lombok.val;
 
 /**
  * 注文確認画面を操作するコントローラクラス.
@@ -25,18 +28,27 @@ import com.example.service.FinalizeOrderService;
 public class FinalizeOrderController {
     @Autowired
     private FinalizeOrderService finalizeOrderService;
+    @Autowired
+    private MailService mailService;
 
-   public record RequestInfo( FinalizeOrderDto form, PaymentInfoDTO paymentInfo){}
+    public record RequestInfo(FinalizeOrderDto form, PaymentInfoDTO paymentInfo) {
+    }
 
     @PostMapping("/finalize")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> finalized(@RequestBody RequestInfo requestInfo, @AuthenticationPrincipal AuthenticationUser user){
-        try{
+    public ResponseEntity<?> finalized(@RequestBody RequestInfo requestInfo,
+            @AuthenticationPrincipal AuthenticationUser user) {
+        try {
             FinalizeOrderDto form = requestInfo.form();
             form.setUserId(user.id());
             PaymentInfoDTO paymentInfo = requestInfo.paymentInfo();
-            return ResponseEntity.ok(finalizeOrderService.finalize(form,paymentInfo));
-        }catch(Exception e){
+            val order = finalizeOrderService.finalize(form, paymentInfo);
+            if (order != null) {
+                mailService.sendHtmlMessage(order);
+                return ResponseEntity.ok("success");
+            }
+            return ResponseEntity.badRequest().body("error");
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
