@@ -98,9 +98,11 @@ public class FinalizeOrderService {
 
                 //購入できたら、売り切れに更新する.
                 for(var orderItem:order.getOrderItems()){
-                    var item = itemRepository.findById(orderItem.getItem().getId()).get();
-                    item.setDeleted(true);
-                    itemRepository.save(item);
+                    var item = itemRepository.findById(orderItem.getItem().getId()).orElse(null);
+                    if(item != null){
+                        item.setDeleted(true);
+                        itemRepository.save(item);
+                    }
                 }
 
                 return result.getStatus();
@@ -112,9 +114,11 @@ public class FinalizeOrderService {
         //-- 現金払いの場合 --//
         // 売り切れに更新する.
         for(var orderItem:order.getOrderItems()){
-            var item = itemRepository.findById(orderItem.getItem().getId()).get();
-            item.setDeleted(true);
-            itemRepository.save(item);
+            var item = itemRepository.findById(orderItem.getItem().getId()).orElse(null);
+            if (item != null) {
+                item.setDeleted(true);
+                itemRepository.save(item);
+            }
         }
         // 常に成功を返す.
         return "success";
