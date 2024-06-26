@@ -27,7 +27,7 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
 
     /**
      * statusとuserIdで検索する.
-     * 
+     *
      * @param status 注文のステータス
      * @param id     Userのid
      * @return statusが注文前でかつuserIdが一致するOrderのリスト
@@ -40,5 +40,9 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
      * @param useId userId
      * @return true or false
      */
-    Boolean existsByStatusAndUserId(OrderStatus status,UUID useId);
+    Boolean existsByUserId(UUID useId);
+
+    Order findByTotalPrice(Integer totalPrice);
+
+    Boolean existsByStatusAndUserId(OrderStatus orderStatus, UUID userId);
 }
