@@ -51,15 +51,6 @@ public class ShowItemListController {
     @PostMapping("/search")
     public ResponseEntity<?> search(@RequestBody SearchDto form) {
         try {
-            // バックエンドのテスト用
-            // val form = new SearchDto();
-            // val colorList = new ArrayList<>(List.of(
-            // UUID.fromString("1177eb09-8443-4670-b903-362d3cd135f0"),
-            // UUID.fromString("146b2622-5838-49a0-8db2-599676e8b673")));
-            // form.setColorList(colorList);
-            // form.setMaxPrice("100000");
-            // form.setMinPrice("60000");
-            // form.setBreedId("3854607f-019f-4591-9ab1-95ac496ba728");
             return ResponseEntity.ok(service.search(form));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -94,6 +85,34 @@ public class ShowItemListController {
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    /**
+     * 全色の情報を返す.
+     *
+     * @return 全色の情報
+     */
+    @GetMapping("/getColor")
+    public ResponseEntity<?> getColor(){
+        try{
+            return ResponseEntity.ok(service.findAllColor());
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    /**
+     * 全品種の情報を返す.
+     *
+     * @return 全品種の情報
+     */
+    @GetMapping("/getBreed")
+    public ResponseEntity<?> getBreed(){
+        try{
+            return ResponseEntity.ok(service.findAllBreed());
+        }catch(Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

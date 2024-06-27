@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.example.domain.Breed;
+import com.example.domain.Color;
 import com.example.domain.Item;
 import com.example.dtos.SearchDto;
 import com.example.repository.BreedRepository;
@@ -43,7 +45,7 @@ public class ShowItemListService {
     }
 
     /**
-     * ＜検索条件＞上限価格、下限価格、種別、色
+     * ＜検索条件＞上限価格、下限価格、種別、色,（未使用のメソッド。ページングのほう使って）
      *
      * @param form フォーム
      * @return 検索結果
@@ -117,5 +119,23 @@ public class ShowItemListService {
                 breed.getId(),
                 colorIdList,
                 pageable);
+    }
+
+    /**
+     * 色を取得するメソッド.
+     *
+     * @return 全色のリスト
+     */
+    public List<Color> findAllColor(){
+        return colorRepository.findAll();
+    }
+
+    /**
+     * 品種を取得するメソッド.
+     *
+     * @return 全品種のリスト
+     */
+    public List<Breed> findAllBreed(){
+        return breedRepository.findAll();
     }
 }
