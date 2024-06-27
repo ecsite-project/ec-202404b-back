@@ -23,7 +23,6 @@ public class MailService {
 
     private static final Logger log = LoggerFactory.getLogger(MailService.class);
 
-
     public void sendHtmlMessage(Order order, User user) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
@@ -103,7 +102,8 @@ public class MailService {
                 .append("            <h1>ご注文ありがとうございます！</h1>\n")
                 .append("        </div>\n")
                 .append("        <div class=\"content\">\n")
-                .append("            <p>こんにちは ").append(user.getFirstName()).append(" ").append(user.getLastName()).append(" 様、</p>\n")
+                .append("            <p>こんにちは ").append(user.getFirstName()).append(" ").append(user.getLastName())
+                .append(" 様、</p>\n")
                 .append("            <p>このたびはご注文いただき、誠にありがとうございます。以下はご注文内容の詳細です。</p>\n")
                 .append("            <h2>注文詳細</h2>\n")
                 .append("            <table class=\"order-details\">\n")
@@ -151,7 +151,8 @@ public class MailService {
                 .append("                </tr>\n")
                 .append("                <tr>\n")
                 .append("                    <th>配達日時</th>\n")
-                .append("                    <td>").append(order.getDeliveryDate()).append(" ").append(order.getTimeRange().getDisplayName()).append("</td>\n")
+                .append("                    <td>").append(order.getDeliveryDate()).append(" ")
+                .append(order.getTimeRange().getDisplayName()).append("</td>\n")
                 .append("                </tr>\n")
                 .append("                <tr>\n")
                 .append("                    <th>支払い方法</th>\n")
@@ -162,12 +163,12 @@ public class MailService {
                 .append("        </div>\n")
                 .append("        <div class=\"footer\">\n")
                 .append("            <p>&copy; 2024 ").append("楽ペットショップ").append(". All rights reserved.</p>\n")
-                .append("            <p>住所: ").append("東京都新宿区〇〇").append(" | 電話: ").append("132-456-789").append("</p>\n")
+                .append("            <p>住所: ").append("東京都新宿区〇〇").append(" | 電話: ").append("132-456-789")
+                .append("</p>\n")
                 .append("        </div>\n")
                 .append("    </div>\n")
                 .append("</body>\n")
                 .append("</html>\n");
-
 
         return html.toString();
     }

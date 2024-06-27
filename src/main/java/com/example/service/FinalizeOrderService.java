@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.UUID;
 
+import com.example.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,9 @@ public class FinalizeOrderService {
 
     @Autowired
     private CreditCardService creditCardService;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     /**
      * 注文商品のリストとクレカのフォーム（クレカ払いのとき）を受け取り
@@ -95,6 +99,15 @@ public class FinalizeOrderService {
             // status = PAID(2)は入金済み
             order.setStatus(OrderStatus.PAID);
             orderRepository.save(order);
+        }
+
+        // 売り切れに更新する.
+        for(var orderItem:order.getOrderItems()){
+            var item = itemRepository.findById(orderItem.getItem().getId()).orElse(null);
+            if (item != null) {
+                item.setDeleted(true);
+                itemRepository.save(item);
+            }
         }
         return order;
     }

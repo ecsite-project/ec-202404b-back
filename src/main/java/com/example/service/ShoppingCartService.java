@@ -72,7 +72,7 @@ public class ShoppingCartService {
         }
 
         var item = itemRepository.findById(UUID.fromString(form.getItemId())).orElse(null);
-        if (item == null)
+        if (item == null || item.isDeleted())
             return;
 
         // 重複追加：削除する ⇒ 新たなデータを再追加
@@ -84,7 +84,7 @@ public class ShoppingCartService {
         }
 
         List<Option> options = new ArrayList<>();
-        if (!form.getOptionIdList().isEmpty()) {
+        if(!form.getOptionIdList().isEmpty()) {
             options = form.getOptionIdList().stream()
                     .map(optionId -> optionRepository.findById(UUID.fromString(optionId))
                             .orElseThrow(() -> new RuntimeException("Option not found: " + optionId)))
