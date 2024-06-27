@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.UUID;
 
+import com.example.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,21 +33,25 @@ public class FinalizeOrderService {
     @Autowired
     private CreditCardService creditCardService;
 
+    @Autowired
+    private ItemRepository itemRepository;
+
     /**
      * 注文商品のリストとクレカのフォーム（クレカ払いのとき）を受け取り
      * Order情報を更新する.
      *
-     * @param form 注文商品の詳細
+     * @param form        注文商品の詳細
      * @param paymentInfo クレカ情報の詳細
      * @return 支払いが成功したらnull、失敗したらerror
      * @throws JsonProcessingException exception
      */
-    public String finalize(FinalizeOrderDto form, PaymentInfoDTO paymentInfo) throws JsonProcessingException {
-        Order order = orderRepository.findByStatusAndUserId(OrderStatus.BEFORE_ORDER, UUID.fromString(form.getUserId()));
+    public Order finalize(FinalizeOrderDto form, PaymentInfoDTO paymentInfo) throws JsonProcessingException {
+        Order order = orderRepository.findByStatusAndUserId(OrderStatus.BEFORE_ORDER,
+                UUID.fromString(form.getUserId()));
         // 0(注文前)->1(未入金)
         order.setStatus(OrderStatus.UNPAID);
 
-        //total price
+        // total price
         var orderItemList = order.getOrderItems();
         var totalPrice = 0;
         for (var orderItem : orderItemList) {
@@ -83,21 +88,27 @@ public class FinalizeOrderService {
 
         // 支払い方法がクレカの場合
         // 現金払いの場合はstatus=UNPAID(1)のまま
-        if(form.getPaymentMethod().equals("Credit Card")){
+        if (form.getPaymentMethod().equals("Credit Card")) {
             paymentInfo.setOrderNumber(String.valueOf(order.getId()));
             paymentInfo.setAmount(order.getTotalPrice());
             val result = creditCardService.callApi(paymentInfo);
-            if(result.getStatus().equals("success")){
-                // status = PAID(2)は入金済み
-                order.setStatus(OrderStatus.PAID);
-                orderRepository.save(order);
-                return result.getStatus();
-            }else{
-                // クレカのエラーメッセージを出力
-                //
-                return result.getStatus();
+            if (!result.getStatus().equals("success")) {
+                // 購入失敗
+                return null;
+            }
+            // status = PAID(2)は入金済み
+            order.setStatus(OrderStatus.PAID);
+            orderRepository.save(order);
+        }
+
+        // 売り切れに更新する.
+        for(var orderItem:order.getOrderItems()){
+            var item = itemRepository.findById(orderItem.getItem().getId()).orElse(null);
+            if (item != null) {
+                item.setDeleted(true);
+                itemRepository.save(item);
             }
         }
-        return "success";
+        return order;
     }
 }
