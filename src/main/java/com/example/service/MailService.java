@@ -3,6 +3,7 @@ package com.example.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -12,26 +13,21 @@ import com.example.domain.Option;
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
 import com.example.domain.User;
-import com.example.repositories.UserRepository;
 
 import jakarta.mail.internet.MimeMessage;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 
 @Service
 public class MailService {
 
+    @Autowired
+    private JavaMailSender javaMailSender;
+
     private static final Logger log = LoggerFactory.getLogger(MailService.class);
 
-    private final JavaMailSender javaMailSender;
-
-    @Autowired
-    public MailService(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
-    }
-
-    @Autowired
-    UserRepository userRepository;
-
-    public void sendHtmlMessage(Order order) {
+    public void sendHtmlMessage(Order order, User user) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -40,7 +36,7 @@ public class MailService {
             helper.setSubject("ご注文ありがとうございます！");
 
             // HTMLメールの内容を構築
-            String content = buildHtmlContent(order);
+            String content = buildHtmlContent(order, user);
             helper.setText(content, true);
 
             javaMailSender.send(message);
@@ -51,9 +47,9 @@ public class MailService {
         }
     }
 
-    private String buildHtmlContent(Order order) {
-        User user = userRepository.findById(order.getUserId()).orElse(null);
+    private String buildHtmlContent(Order order, User user) {
         StringBuilder html = new StringBuilder();
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.JAPAN);
         html.append("<!DOCTYPE html>\n")
                 .append("<html lang=\"ja\">\n")
                 .append("<head>\n")
@@ -111,7 +107,8 @@ public class MailService {
                 .append("            <h1>ご注文ありがとうございます！</h1>\n")
                 .append("        </div>\n")
                 .append("        <div class=\"content\">\n")
-                .append("            <p>こんにちは ").append(user.getFirstName()).append(" ").append(user.getLastName()).append(" 様、</p>\n")
+                .append("            <p>こんにちは ").append(user.getFirstName()).append(" ").append(user.getLastName())
+                .append(" 様、</p>\n")
                 .append("            <p>このたびはご注文いただき、誠にありがとうございます。以下はご注文内容の詳細です。</p>\n")
                 .append("            <h2>注文詳細</h2>\n")
                 .append("            <table class=\"order-details\">\n")
@@ -126,21 +123,21 @@ public class MailService {
             html.append("                <tr>\n")
                     .append("                    <td>").append(item.getBreed().getName()).append("</td>\n")
                     .append("                    <td>1</td>\n")
-                    .append("                    <td>").append(item.getPrice()).append("</td>\n")
+                    .append("                    <td>").append(numberFormat.format(item.getPrice())).append("円</td>\n")
                     .append("                </tr>\n");
             System.out.println(orderItem.getOptions().size());
             for (Option option : orderItem.getOptions()) {
                 html.append("                <tr>\n")
                         .append("                    <td>").append(option.getName()).append("</td>\n")
                         .append("                    <td>1</td>\n")
-                        .append("                    <td>").append(option.getPrice()).append("</td>\n")
+                        .append("                    <td>").append(numberFormat.format(option.getPrice())).append("円</td>\n")
                         .append("                </tr>\n");
             }
         }
 
         html.append("                <tr>\n")
                 .append("                    <th colspan=\"2\">合計</th>\n")
-                .append("                    <th>").append(order.getTotalPrice()).append("</th>\n")
+                .append("                    <th>").append(numberFormat.format(order.getTotalPrice())).append("円</th>\n")
                 .append("                </tr>\n")
                 .append("            </table>\n")
                 .append("            <h2>顧客情報</h2>\n")
@@ -159,7 +156,8 @@ public class MailService {
                 .append("                </tr>\n")
                 .append("                <tr>\n")
                 .append("                    <th>配達日時</th>\n")
-                .append("                    <td>").append(order.getDeliveryDate()).append(" ").append(order.getTimeRange().getDisplayName()).append("</td>\n")
+                .append("                    <td>").append(order.getDeliveryDate()).append(" ")
+                .append(order.getTimeRange().getDisplayName()).append("</td>\n")
                 .append("                </tr>\n")
                 .append("                <tr>\n")
                 .append("                    <th>支払い方法</th>\n")
@@ -170,12 +168,12 @@ public class MailService {
                 .append("        </div>\n")
                 .append("        <div class=\"footer\">\n")
                 .append("            <p>&copy; 2024 ").append("楽ペットショップ").append(". All rights reserved.</p>\n")
-                .append("            <p>住所: ").append("東京都新宿区〇〇").append(" | 電話: ").append("132-456-789").append("</p>\n")
+                .append("            <p>住所: ").append("東京都新宿区〇〇").append(" | 電話: ").append("132-456-789")
+                .append("</p>\n")
                 .append("        </div>\n")
                 .append("    </div>\n")
                 .append("</body>\n")
                 .append("</html>\n");
-
 
         return html.toString();
     }
