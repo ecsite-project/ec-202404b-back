@@ -3,6 +3,7 @@ package com.example.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ import com.example.domain.User;
 import com.example.repositories.UserRepository;
 
 import jakarta.mail.internet.MimeMessage;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 
 @Service
 public class MailService {
@@ -54,6 +58,7 @@ public class MailService {
     private String buildHtmlContent(Order order) {
         User user = userRepository.findById(order.getUserId()).orElse(null);
         StringBuilder html = new StringBuilder();
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.JAPAN);
         html.append("<!DOCTYPE html>\n")
                 .append("<html lang=\"ja\">\n")
                 .append("<head>\n")
@@ -126,21 +131,21 @@ public class MailService {
             html.append("                <tr>\n")
                     .append("                    <td>").append(item.getBreed().getName()).append("</td>\n")
                     .append("                    <td>1</td>\n")
-                    .append("                    <td>").append(item.getPrice()).append("</td>\n")
+                    .append("                    <td>").append(numberFormat.format(item.getPrice())).append("円</td>\n")
                     .append("                </tr>\n");
             System.out.println(orderItem.getOptions().size());
             for (Option option : orderItem.getOptions()) {
                 html.append("                <tr>\n")
                         .append("                    <td>").append(option.getName()).append("</td>\n")
                         .append("                    <td>1</td>\n")
-                        .append("                    <td>").append(option.getPrice()).append("</td>\n")
+                        .append("                    <td>").append(numberFormat.format(option.getPrice())).append("円</td>\n")
                         .append("                </tr>\n");
             }
         }
 
         html.append("                <tr>\n")
                 .append("                    <th colspan=\"2\">合計</th>\n")
-                .append("                    <th>").append(order.getTotalPrice()).append("</th>\n")
+                .append("                    <th>").append(numberFormat.format(order.getTotalPrice())).append("円</th>\n")
                 .append("                </tr>\n")
                 .append("            </table>\n")
                 .append("            <h2>顧客情報</h2>\n")
